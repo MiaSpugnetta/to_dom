@@ -1,5 +1,3 @@
-#import imaplib
-#import email
 from imap_tools import MailBox, AND
 import json
 from collections import defaultdict
@@ -9,11 +7,13 @@ from email.mime.multipart import MIMEMultipart
 #from simple_colors import *
 
 
+# Function to import parameters from external json file
 def get_config(path):
     with open(path, 'r') as config_file:
         config_str = config_file.read()
     config = json.loads(config_str)
     return config
+
 
 config = get_config('config.json')  # Get sensitive data stored in separate file
 
@@ -30,7 +30,7 @@ mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set 
 # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
 use_stale = False
 
-if use_stale:
+if use_stale:  # (is True):
     msg_dict = {'4': {'subject': 'TEST', 'text': '-- \r\nThomas Rost\r\n'}, '5': {'subject': 'Test', 'text': 'This is a test.\r\n'}, '6': {'subject': 'Test 2', 'text': 'Mia is my favorite\r\n'}}
 else:
     msg_dict = {}
@@ -58,13 +58,12 @@ def parse_dict(msg_dict):
                     'text': msg_dict[id]['text']  # Object+body of the email at said index (id).
         }
 
-
         return_dict[msg_dict[id]['subject'].capitalize()].append(append_dict)  # TODO: understand what kind of magic happens here. Additionally all subject are capitalised.
     #print(return_dict)
     #print("####################")
     ##print(append_dict)
 
-    # {TODO: find a way to replace "ressource" with "reasource"
+    # {TODO: find a way to replace "ressource" with "resource"
         #new_dict = defaultdict()
         ##replace = "Ressource"
         ##replace_with = "Resource"
@@ -81,8 +80,9 @@ def parse_dict(msg_dict):
 # Function that composes the body of the email to send
 def generate_message(parsed_dict):
     return_string = ''
+    #{ TODO: format text in email (i.e. categories in bold)
     #start = "\033[1m"
-    #end = "\033[0;0m"
+    #end = "\033[0;0m" #}
     for subject in parsed_dict:  # For category in the dictionary:
         return_string += f"{subject}, number of mails: {len(parsed_dict[subject])}:\n\n"  # Append the name of the category and the number of messages that belong to that category.
 
@@ -100,7 +100,7 @@ return_dict = parse_dict(msg_dict)
 ###########################################
 # Create email to be sent
 
-context = ssl.create_default_context()
+context = ssl.create_default_context()  # Create a secure SSL context
 
 port = config['port']
 smtp_server = config['smtp_server']
@@ -117,7 +117,7 @@ message.attach(first_crap)
 
 
 # Send composed email
-with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:  # Makes sure that the connection is automatically closed at the end of the indented code block. If port is 0 or not specified, standard port for SMTP over SSL is 465.
     server.login(sender_email, password)
     server.sendmail(sender_email, receiver_email, message.as_string())
 
