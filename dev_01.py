@@ -31,15 +31,28 @@ mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set 
 use_stale = False
 
 if use_stale:  # (is True):
-    msg_dict = {'4': {'subject': 'TEST', 'text': '-- \r\nThomas Rost\r\n'}, '5': {'subject': 'Test', 'text': 'This is a test.\r\n'}, '6': {'subject': 'Test 2', 'text': 'Mia is my favorite\r\n'}}
+    msg_dict = {
+                    '4': {
+                            'subject': 'TEST',
+                            'text': '-- \r\nThomas Rost\r\n'
+                         },
+                    '5': {
+                            'subject': 'Test',
+                            'text': 'This is a test.\r\n'
+                         },
+                    '6': {
+                            'subject': 'Test 2',
+                            'text': 'Mia is my favorite\r\n'
+                         }
+               }
 else:
     msg_dict = {}
     for msg in mailbox.fetch(AND(all=True)):  # For message in inbox
-        if msg.from_ in email_list:  # If message from email addresses in the email list
+        if msg.from_ in email_list:  # If message from email addresses in the   email list
             msg_dict[msg.uid] = {
                             'subject': msg.subject,
                             'text': msg.text
-            }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
+                                }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
             mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
 
 # Prints number of email to the terminal
