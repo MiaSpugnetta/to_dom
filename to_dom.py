@@ -1,5 +1,6 @@
 from imap_tools import MailBox, AND
 import json
+import operator
 from collections import defaultdict
 import smtplib, ssl
 from email.mime.text import MIMEText
@@ -27,7 +28,7 @@ project_key = config['project_key']
 
 # Access email account
 mailbox = MailBox(imap_server)
-mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg
+#mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg
 
 # Initialize with a Project Key
 deta = Deta(project_key)
@@ -71,10 +72,65 @@ def create_dict():
     print(f"There are {len(msg_dict)} messages")
     return msg_dict
 
+## if there is a more recent msg in inbox then create_dict(), else msg_dict
 
+# can use id as integer?
+
+# write msg_dict to ext_file and rewrite if necessary
+
+#def get_dict_from_file(path):
+    
+    
+    
+    
+    
 # Create the email dictionary
-msg_dict = create_dict()
+#msg_dict = create_dict()
 
+
+#########################################################
+#write msg_dict to msg_dict.json
+
+def write_dict_to_file(path, dict):
+    with open(path, 'w') as dict_file:
+        json.dump(dict, dict_file, sort_keys=True, indent=4)  # Writes dict to json in order of key and with separators
+
+
+
+       # json_file
+        #data = json.loads()
+        #dict_file.sort(key=operator.itemgetter('id'))
+
+# Write data (emails fetched from inbox) to json file
+#write_dict_to_file('msg_dict.json', msg_dict)
+
+
+#############################################################
+
+"""
+def load_dict_from_file(path):
+    with open(path) as dict_json_file:
+        json_dict = json.load(dict_json_file)
+    return json_dict
+
+json_dict = load_dict_from_file('msg_dict.json')
+#max_key = max(json_dict.items(), key=operator.itemgetter(0))
+#max_key = max(json_dict.items(), key=operator.itemgetter(1))[0]
+
+def find_max_key(j_dict):
+    for key, value in j_dict.items():
+        if type(key) == int:
+            return max(key)
+    return max(key)
+
+max_key = find_max_key(json_dict)
+print(max_key)
+
+
+#import operator
+#stats = {'a':1000, 'b':3000, 'c': 100}
+#max(stats.iteritems(), key=operator.itemgetter(1))[0]
+"""
 
 #########################################################
 # Function to parse the dictionary.
@@ -131,7 +187,17 @@ def capitalise_dict_values(dict_of_msgs):
 
 
 # Capitalise subject values in the original dictionary {id: {'subject':subject, 'text':text}, ...}
-dict_of_msgs = capitalise_dict_values(msg_dict)
+#dict_of_msgs = capitalise_dict_values(msg_dict)
+
+def get_dict_of_msg():
+    mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg
+
+    msg_dict = create_dict()
+    dict_of_msgs = capitalise_dict_values(msg_dict)
+    mailbox.logout()
+
+    return dict_of_msgs
+
 
 ## Unit test to assert that the capitalisation thing worked
 #for message_key in dict_of_msgs.keys():
@@ -147,7 +213,7 @@ def add_to_db(dict_of_msgs):
 
 
 # Add the messages to the db
-add_to_db(dict_of_msgs)
+#add_to_db(dict_of_msgs)
 
 
 #########################################################
@@ -187,9 +253,11 @@ def create_and_send_email():
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
 
-send_report = False
+send_report = False  # If True, them email is composed and sent
 if send_report:
     create_and_send_email()  # Create email to be sent
+    print("Email has been sent!")
 
 # Log out from the email account
-mailbox.logout()
+#mailbox.logout()
+#mailbox.logout()
