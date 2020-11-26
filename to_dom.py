@@ -263,7 +263,9 @@ def create_and_send_email():
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
 
-send_report = False  # If True, them email is composed and sent
+# Set to True before running the script and email will be composed and sent
+# Set to False before running the flask app
+send_report = True  # If True, them email is composed and sent
 if send_report:
     create_and_send_email()  # Create email to be sent
     print("Email has been sent!")
