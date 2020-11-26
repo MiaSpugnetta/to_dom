@@ -1,6 +1,6 @@
 from imap_tools import MailBox, AND
 import json
-import operator
+#import operator
 from collections import defaultdict
 import smtplib, ssl
 from email.mime.text import MIMEText
@@ -82,55 +82,57 @@ def create_dict():
     
     
     
-    
-    
+"""    
 # Create the email dictionary
-#msg_dict = create_dict()
+msg_dict = create_dict()
 
 
 #########################################################
-#write msg_dict to msg_dict.json
-
-def write_dict_to_file(path, dict):
-    with open(path, 'w') as dict_file:
-        json.dump(dict, dict_file, sort_keys=True, indent=4)  # Writes dict to json in order of key and with separators
-
-
-
-       # json_file
-        #data = json.loads()
-        #dict_file.sort(key=operator.itemgetter('id'))
-
-# Write data (emails fetched from inbox) to json file
-#write_dict_to_file('msg_dict.json', msg_dict)
-
-
-#############################################################
-
 """
-def load_dict_from_file(path):
-    with open(path) as dict_json_file:
-        json_dict = json.load(dict_json_file)
-    return json_dict
-
-json_dict = load_dict_from_file('msg_dict.json')
-#max_key = max(json_dict.items(), key=operator.itemgetter(0))
-#max_key = max(json_dict.items(), key=operator.itemgetter(1))[0]
-
-def find_max_key(j_dict):
-    for key, value in j_dict.items():
-        if type(key) == int:
-            return max(key)
-    return max(key)
-
-max_key = find_max_key(json_dict)
-print(max_key)
 
 
-#import operator
-#stats = {'a':1000, 'b':3000, 'c': 100}
-#max(stats.iteritems(), key=operator.itemgetter(1))[0]
-"""
+## Write msg_dict to msg_dict.json
+#
+#def write_dict_to_file(path, dict):
+#    with open(path, 'w') as dict_file:
+#        json.dump(dict, dict_file, sort_keys=True, indent=4)  # Writes dict to json in order of key and with separators
+#
+#
+#
+#       # json_file
+#        #data = json.loads()
+#        #dict_file.sort(key=operator.itemgetter('id'))
+#
+## Write data (emails fetched from inbox) to json file
+##write_dict_to_file('msg_dict.json', msg_dict)
+#
+#
+##############################################################
+#
+#"""
+#def load_dict_from_file(path):
+#    with open(path) as dict_json_file:
+#        json_dict = json.load(dict_json_file)
+#    return json_dict
+#
+#json_dict = load_dict_from_file('msg_dict.json')
+##max_key = max(json_dict.items(), key=operator.itemgetter(0))
+##max_key = max(json_dict.items(), key=operator.itemgetter(1))[0]
+#
+#def find_max_key(j_dict):
+#    for key, value in j_dict.items():
+#        if type(key) == int:
+#            return max(key)
+#    return max(key)
+#
+#max_key = find_max_key(json_dict)
+#print(max_key)
+#
+#
+##import operator
+##stats = {'a':1000, 'b':3000, 'c': 100}
+##max(stats.iteritems(), key=operator.itemgetter(1))[0]
+#"""
 
 #########################################################
 # Function to parse the dictionary.
