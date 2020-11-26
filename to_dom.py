@@ -27,7 +27,7 @@ imap_server = config['imap_server']
 project_key = config['project_key']
 
 # Access email account
-mailbox = MailBox(imap_server)
+mailbox = MailBox(imap_server)  # Create mailbox object
 #mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg
 
 # Initialize with a Project Key
@@ -188,13 +188,21 @@ def capitalise_dict_values(dict_of_msgs):
 
 # Capitalise subject values in the original dictionary {id: {'subject':subject, 'text':text}, ...}
 #dict_of_msgs = capitalise_dict_values(msg_dict)
-
+is_not_logged_in = True
 def get_dict_of_msg():
-    mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg
+    if is_not_logged_in:
+        mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
 
-    msg_dict = create_dict()
-    dict_of_msgs = capitalise_dict_values(msg_dict)
-    mailbox.logout()
+        msg_dict = create_dict()
+        dict_of_msgs = capitalise_dict_values(msg_dict)
+        mailbox.logout()
+
+        #return dict_of_msgs
+
+    else:
+        msg_dict = create_dict()
+        dict_of_msgs = capitalise_dict_values(msg_dict)
+        #mailbox.logout()
 
     return dict_of_msgs
 
@@ -237,6 +245,8 @@ def generate_message(parsed_dict):
 #########################################################
 # Function that composes and sends the email report
 def create_and_send_email():
+    msg_dict = get_dict_of_msg()  # Create msg_dict
+
     context = ssl.create_default_context()  # Create a secure SSL context
     port = config['port']
     smtp_server = config['smtp_server']
@@ -258,6 +268,9 @@ if send_report:
     create_and_send_email()  # Create email to be sent
     print("Email has been sent!")
 
+
+if is_not_logged_in == False:
+    mailbox.logout()
 # Log out from the email account
 #mailbox.logout()
 #mailbox.logout()
