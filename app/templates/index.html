@@ -13,6 +13,16 @@
 
   <body>
     <p>Here there will be the email text</p>
-    {{ text_email }}
+    {# {{ all_entries }} #}
+    {% for entry in all_entries %}
+      {% for dict in entry %}
+
+        <p>{{ dict  }}</p>
+
+      {% endfor %}
+     {# {{ entry }} #}
+
+    {% endfor %}
+
   </body>
 </html>

@@ -1,4 +1,5 @@
 from flask import Flask
+#from flask_config import Config
 
 # Create instance of a Flask class
 app = Flask(__name__)  # The `__name__` variable passed to the Flask class is a Python predefined variable.
@@ -9,6 +10,7 @@ app = Flask(__name__)  # The `__name__` variable passed to the Flask class is a 
 #config = get_config('../config.json')
 #secret_key = config['secret_key']
 #app.config(secret_key)
+
 #app.config.from_object(Config)  # Import SECRET_KEY from Config class in config file.
 
 ######################################

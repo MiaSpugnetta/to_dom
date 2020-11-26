@@ -13,6 +13,7 @@ def index():
     all_entries = list(db.fetch())
 
 
+
     print(all_entries)
     #global dict_of_msgs
     #parsed_dictionary = parse_dict(dict_of_msgs)
@@ -20,7 +21,7 @@ def index():
     #dict_msg = generate_message(parsed_dictionary)
     #text_email = generate_message(dict_msg)
     #print(text_email)
-    return render_template("index.html", text_email=all_entries)
+    return render_template("index.html", all_entries=all_entries)
 
 
 # TODO:
