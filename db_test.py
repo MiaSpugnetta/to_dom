@@ -31,7 +31,8 @@ john_whiskey = db.put(user4)
 #user_x = db.get("42")
 #print(john_whiskey)
 
-mias = db.fetch({'likes':'Thomas'})
+
+
 #print(list(mias))
 
 
