@@ -28,7 +28,6 @@ project_key = config['project_key']
 mailbox = MailBox(imap_server)
 mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg
 
-
 # Initialize with a Project Key
 deta = Deta(project_key)
 
@@ -64,10 +63,12 @@ else:
                                 }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
             mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
             #db.put(msg)
+
 # Prints number of email to the terminal
 print(f"There are {len(msg_dict)} messages")
 
 
+##################################
 # Function to parse the dictionary.
 def parse_dict(msg_dict):
     assert type(msg_dict) == dict, f"dummy you're using a {type(msg_dict)}"  # Make sure that the dictionary containing the emails is indeed a dictionary.
@@ -111,55 +112,37 @@ def parse_dict(msg_dict):
 
     return return_dict  # Returns a dictionary of dictionaries where the key is the subject (category) of the email and the value is a list of dictionaries that have that category as subject. Each of these subdictionary has then id and text as keys.
 
-##################
-#return_dict = parse_dict(msg_dict)
-#print(msg_dict)
 
-#for i,d in msg_dict.items():
-#    for subject in d:
-#        subjects.append(d['subject'].capitalize())
-#print(subjects)
-"""
-#list_sub = []
-#dict_of_msgs = stale_dict.copy()
-dict_of_msgs = msg_dict.copy()
-print(dict_of_msgs)
-for id,msg in dict_of_msgs.items():
-    # here
-    #dict_of_msgs[id] = dict((k, v.capitalize()) for k,v in msg.items() if #k =='subject')
-    for k,field in msg.items():
-        if k in ['subject']:
+#############################
+# Capitalise subject values in the original dictionary {id: {'subject':subject, 'text':text}, ...}
 
-        #for releant_entry in relevant_list: # relevant_list = ['this', 'that', 'those]
-        #    if k == releant_entry:
-        #        Do your thangg
-            #msg['subject']=msg['subject'].capitalize()
+dict_of_msgs = msg_dict.copy()  # Create copy of original dictionary
 
-            #j['subject'].replace(j['subject'], j['subject'].capitalize())
-            msg[k]=msg[k].capitalize()
-            #list_sub.append(j['subject'])
-    dict_of_msgs[id] = msg
-    #for sub in j:
-    #    j['subject'].replace(j['subject'], j['subject'].capitalize())
-            #list_sub.append(j[v])
-        #list_sub.append(sub['subject'])
+for id,msg in dict_of_msgs.items():  # For key, value (where key=id and vale={msg}) in dictionary of messages:
+    for k,field in msg.items():  # For key, value (where key='subject', 'text and values are the subject and text of the msg) in msg subdictionary:
+        if k in ['subject']:  # If key == the str 'subject' (or if the k is contained (is equal to on of the entries) in the list that contains the str 'subject':
+            msg[k]=msg[k].capitalize()  # Capitalise the value of the key 'subject'.
+        # (Can also be represented as:
+        #  For releant_entry in relevant_list: # relevant_list = ['this', 'that', 'those']
+        #    If k == releant_entry:
+        #        Do your thing)
 
-#print(list_sub)
-print("#############")
-#{i:j for i,j.capitalize() in msg_dict.items()}
+    dict_of_msgs[id] = msg  # Overwrite the original msg in the original dict with the msg that contains the capitalised subject values.
+
+
+# Unit test to assert that the capitalisation thing worked
 for message_key in dict_of_msgs.keys():
     assert dict_of_msgs[message_key]['subject'][0].isupper(), f"not upper case {dict_of_msgs[message_key]['subject']}"
 print(dict_of_msgs)
-#dict_of_msgs = msg_dict[id]['subject'].capitalize()
-#print(msg_dict)
+
+
+########################################################
+# Add the messages to the database
 for id, msg in dict_of_msgs.items():
     db.put(msg, key=str(id))
 
 
-#stories = db.fetch({'subject':'Stories'})
-#print(list(stories))
-"""
-
+#########################################################
 # Function that composes the body of the email to send
 def generate_message(parsed_dict):
     return_string = ''
