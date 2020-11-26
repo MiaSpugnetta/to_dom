@@ -1,13 +1,10 @@
 from imap_tools import MailBox, AND
 import json
-#import operator
 from collections import defaultdict
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-#from simple_colors import *
 from deta import Deta
-#from methods import *
 
 
 # Function to import parameters from external json file
@@ -20,19 +17,18 @@ def get_config(path):
 
 config = get_config('config.json')  # Get sensitive data stored in separate file
 
+# Values assigned to variables
 password = config['password']
 email = config['email']
 email_list = config['email_list']
 imap_server = config['imap_server']
 project_key = config['project_key']
 
-# Access email account
-mailbox = MailBox(imap_server)  # Create mailbox object
-#mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg
+# Create mailbox object
+mailbox = MailBox(imap_server)
 
 # Initialize with a Project Key
 deta = Deta(project_key)
-
 # This connects to (or creates) a database
 db = deta.Base("test_emails_db")
 
@@ -72,71 +68,10 @@ def create_dict():
     print(f"There are {len(msg_dict)} messages")
     return msg_dict
 
-## if there is a more recent msg in inbox then create_dict(), else msg_dict
-
-# can use id as integer?
-
-# write msg_dict to ext_file and rewrite if necessary
-
-#def get_dict_from_file(path):
-    
-    
-    
-"""    
-# Create the email dictionary
-msg_dict = create_dict()
-
-
-#########################################################
-"""
-
-
-## Write msg_dict to msg_dict.json
-#
-#def write_dict_to_file(path, dict):
-#    with open(path, 'w') as dict_file:
-#        json.dump(dict, dict_file, sort_keys=True, indent=4)  # Writes dict to json in order of key and with separators
-#
-#
-#
-#       # json_file
-#        #data = json.loads()
-#        #dict_file.sort(key=operator.itemgetter('id'))
-#
-## Write data (emails fetched from inbox) to json file
-##write_dict_to_file('msg_dict.json', msg_dict)
-#
-#
-##############################################################
-#
-#"""
-#def load_dict_from_file(path):
-#    with open(path) as dict_json_file:
-#        json_dict = json.load(dict_json_file)
-#    return json_dict
-#
-#json_dict = load_dict_from_file('msg_dict.json')
-##max_key = max(json_dict.items(), key=operator.itemgetter(0))
-##max_key = max(json_dict.items(), key=operator.itemgetter(1))[0]
-#
-#def find_max_key(j_dict):
-#    for key, value in j_dict.items():
-#        if type(key) == int:
-#            return max(key)
-#    return max(key)
-#
-#max_key = find_max_key(json_dict)
-#print(max_key)
-#
-#
-##import operator
-##stats = {'a':1000, 'b':3000, 'c': 100}
-##max(stats.iteritems(), key=operator.itemgetter(1))[0]
-#"""
 
 #########################################################
 # Function to parse the dictionary.
-# Necessary to send the email
+# Necessary to send the EMAIL
 def parse_dict(msg_dict):
     assert type(msg_dict) == dict, f"dummy you're using a {type(msg_dict)}"  # Make sure that the dictionary containing the emails is indeed a dictionary.
 
@@ -170,7 +105,7 @@ def parse_dict(msg_dict):
 
 #########################################################
 # Function to capitalise subject values in the original dictionary {id: {'subject':subject, 'text':text}, ...}
-# Necessary to sent to the database
+# Necessary to sent to the DATABASE
 def capitalise_dict_values(dict_of_msgs):
     final_dict = dict_of_msgs.copy()  # Create copy of original dictionary
 
@@ -187,9 +122,7 @@ def capitalise_dict_values(dict_of_msgs):
 
     return final_dict
 
-
-# Capitalise subject values in the original dictionary {id: {'subject':subject, 'text':text}, ...}
-#dict_of_msgs = capitalise_dict_values(msg_dict)
+# If set to True, get_dict_of_msg() function will get to the loop that begins wil the logging into the email account and logout at the end of the same loop, else this happens in the create_and_send_email() function.
 is_not_logged_in = True
 def get_dict_of_msg():
     if is_not_logged_in:
