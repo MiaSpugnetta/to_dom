@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 #from simple_colors import *
 from deta import Deta
-
+#from methods import *
 
 # Function to import parameters from external json file
 def get_config(path):
@@ -111,17 +111,18 @@ for id,msg in dict_of_msgs.items():  # For key, value (where key=id and vale={ms
         if k in ['subject']:  # If key == the str 'subject' (or if the k is contained (is equal to on of the entries) in the list that contains the str 'subject':
             msg[k] = msg[k].capitalize()  # Capitalise the value of the key 'subject'.
         # (Can also be represented as:
-        #  For releant_entry in relevant_list: # relevant_list = ['this', 'that', 'those']
-        #    If k == releant_entry:
+        #  For relevant_entry in relevant_list: # relevant_list = ['this', 'that', 'those']
+        #    If k == relevant_entry:
         #        Do your thing)
 
     dict_of_msgs[id] = msg  # Overwrite the original msg in the original dict with the msg that contains the capitalised subject values.
 
+#dict_of_msgs = capitalise_dict_values(msg_dict)
 
 # Unit test to assert that the capitalisation thing worked
 for message_key in dict_of_msgs.keys():
     assert dict_of_msgs[message_key]['subject'][0].isupper(), f"not upper case {dict_of_msgs[message_key]['subject']}"
-print(dict_of_msgs)
+#print(dict_of_msgs)
 
 
 ########################################################
