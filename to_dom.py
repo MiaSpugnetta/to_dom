@@ -122,24 +122,26 @@ def capitalise_dict_values(dict_of_msgs):
 
     return final_dict
 
-# If set to True, get_dict_of_msg() function will get to the loop that begins wil the logging into the email account and logout at the end of the same loop, else this happens in the create_and_send_email() function.
+# If set to True, get_dict_of_msg() function will get to the loop that begins with the logging into the email account and logout at the end of the same loop, else this happens in the create_and_send_email() function.
 is_not_logged_in = True
+
 def get_dict_of_msg():
     if is_not_logged_in:
         mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
 
-        msg_dict = create_dict()
-        dict_of_msgs = capitalise_dict_values(msg_dict)
-        mailbox.logout()
+        msg_dict = create_dict()  # Create dictionary with relevant emails
+        dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise the first letter of the subject of the email
+        add_to_db(dict_of_msgs)  # Add the messages to the db
+        mailbox.logout()  # Logout from the email account
 
         #return dict_of_msgs
 
-    else:
-        msg_dict = create_dict()
-        dict_of_msgs = capitalise_dict_values(msg_dict)
+    else:  # If already logged into email account
+        msg_dict = create_dict()  # Create dictionary with relevant emails
+        dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise subjects
         #mailbox.logout()
 
-    return dict_of_msgs
+    return dict_of_msgs  # Return the dictionary of emails
 
 
 ## Unit test to assert that the capitalisation thing worked
@@ -200,10 +202,15 @@ def create_and_send_email():
 
 # Set to True before running the script and email will be composed and sent
 # Set to False before running the flask app
-send_report = True  # If True, them email is composed and sent
-if send_report:
-    create_and_send_email()  # Create email to be sent
-    print("Email has been sent!")
+ # If True, them email is composed and sent
+
+
+def send_mail(send_report=False):
+    if send_report:
+        create_and_send_email()  # Create email to be sent
+        print("Email has been sent!")
+
+
 
 
 if is_not_logged_in == False:

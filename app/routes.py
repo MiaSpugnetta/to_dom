@@ -6,7 +6,7 @@ from flask import render_template
 from flask_config import db
 #from to_dom import dict_of_msgs  # has to be in the code, but if uncommented to_dom.py runs every time the flask app run! SHIIIIIIIIIIIIIIIITTTTTTTTT
 from to_dom import get_dict_of_msg
-from methods import add_to_db
+# from methods import add_to_db
 from .forms import ButtonInput
 
 #{TODO: link displayed in html
@@ -34,7 +34,7 @@ def index():
     button = ButtonInput()
     if button.validate_on_submit():
         dict_of_msgs = get_dict_of_msg()
-        add_to_db(dict_of_msgs)
+        #add_to_db(dict_of_msgs)
         return f"""You are the favourite and your database has been updated, refresh the page!"""
 
     return render_template("index.html", all_entries=all_entries, form=button)

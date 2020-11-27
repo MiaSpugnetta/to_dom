@@ -1,5 +1,11 @@
-from to_dom import db
+from imap_tools import MailBox, AND
 import json
+from collections import defaultdict
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
 # Function to get the config values from the Config file
 def get_config(path):
     with open(path, 'r') as config_file:
@@ -10,7 +16,6 @@ def get_config(path):
 
 # Function to create the email dictionary
 def create_dict():
-    global msg_dict, msg
     # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
     use_stale = False
     if use_stale:  # (is True):
