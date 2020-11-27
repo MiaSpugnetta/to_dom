@@ -5,7 +5,9 @@ import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from deta import Deta
-# TODO: WORK ON THE COPY!
+# TODO: move functions to separate file
+# TODO: separate functions into bd functions and mail functions
+# TODO: clean this and structure
 
 # Function to import parameters from external json file
 def get_config(path):
