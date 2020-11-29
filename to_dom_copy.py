@@ -8,14 +8,16 @@ from deta import Deta
 # TODO: move functions to separate file
 # TODO: separate functions into bd functions and mail functions
 # TODO: clean this and structure
+from methods import *
 
 # Function to import parameters from external json file
+"""
 def get_config(path):
     with open(path, 'r') as config_file:
         config_str = config_file.read()
     config = json.loads(config_str)
     return config
-
+"""
 
 config = get_config('config.json')  # Get sensitive data stored in separate file
 
@@ -36,6 +38,7 @@ db = deta.Base("test_emails_db")
 
 
 # Function to create the email dictionary
+"""
 def create_dict():
     global msg_dict, msg
     # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
@@ -69,11 +72,12 @@ def create_dict():
     # Prints number of email to the terminal
     print(f"There are {len(msg_dict)} messages")
     return msg_dict
-
+"""
 
 #########################################################
 # Function to parse the dictionary.
 # Necessary to send the EMAIL
+'''
 def parse_dict(msg_dict):
     assert type(msg_dict) == dict, f"dummy you're using a {type(msg_dict)}"  # Make sure that the dictionary containing the emails is indeed a dictionary.
 
@@ -104,10 +108,11 @@ def parse_dict(msg_dict):
 
     return return_dict  # Returns a dictionary of dictionaries where the key is the subject (category) of the email and the value is a list of dictionaries that have that category as subject. Each of these subdictionary has then id and text as keys.
 
-
+'''
 #########################################################
 # Function to capitalise subject values in the original dictionary {id: {'subject':subject, 'text':text}, ...}
 # Necessary to sent to the DATABASE
+'''
 def capitalise_dict_values(dict_of_msgs):
     final_dict = dict_of_msgs.copy()  # Create copy of original dictionary
 
@@ -123,25 +128,28 @@ def capitalise_dict_values(dict_of_msgs):
         final_dict[id] = msg  # Overwrite the original msg in the original dict with the msg that contains the capitalised subject values.
 
     return final_dict
+'''
 
 # If set to True, get_dict_of_msg() function will get to the loop that begins with the logging into the email account and logout at the end of the same loop, else this happens in the create_and_send_email() function.
-is_not_logged_in = True
+#is_not_logged_in = True
 
-def get_dict_of_msg():
-    if is_not_logged_in:
-        mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
+# Function to create the dictionary of messages. Returns a dict with capitalised subjects.
 
-        msg_dict = create_dict()  # Create dictionary with relevant emails
-        dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise the first letter of the subject of the email
-        add_to_db(dict_of_msgs)  # Add the messages to the db
-        mailbox.logout()  # Logout from the email account
+def get_dict_of_msg(mailbox, email:str, password:str):
+
+    #if is_not_logged_in: # If set to True, get_dict_of_msg() function will get to the loop that begins with the logging into the email account and logout at the end of the same loop, else this happens in the create_and_send_email() function.
+    mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
+    msg_dict = create_dict()  # Create dictionary with relevant emails
+    dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise the first letter of the subject of the email
+    add_to_db(dict_of_msgs)  # Add the messages to the db
+    mailbox.logout()  # Logout from the email account
 
         #return dict_of_msgs
 
-    else:  # If already logged into email account
-        msg_dict = create_dict()  # Create dictionary with relevant emails
-        dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise subjects
-        #mailbox.logout()
+    #else:  # If already logged into email account
+    #    msg_dict = create_dict()  # Create dictionary with relevant emails
+    #    dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise subjects
+    #    #mailbox.logout()
 
     return dict_of_msgs  # Return the dictionary of emails
 
@@ -154,17 +162,19 @@ def get_dict_of_msg():
 
 #########################################################
 # Function to add the messages to the database
+'''
 def add_to_db(dict_of_msgs):
     for id, msg in dict_of_msgs.items():
         db.put(msg, key=str(id))
 
-
+'''
 # Add the messages to the db
 #add_to_db(dict_of_msgs)
 
 
 #########################################################
 # Function that composes the body of the email to send
+'''
 def generate_message(parsed_dict):
     return_string = ''
     #{ TODO: format text in email (i.e. categories in bold)
@@ -179,12 +189,15 @@ def generate_message(parsed_dict):
         return_string += '_________________________\n\n\n'  # Add a separator after each category.
 
     return return_string  # Return composed message (text that goes in the body of the email)
+'''
 
+##HERE
 
 #########################################################
 # Function that composes and sends the email report
+
 def create_and_send_email():
-    msg_dict = get_dict_of_msg()  # Create msg_dict
+    msg_dict = get_dict_of_msg(mailbox, email, password  # Create msg_dict
 
     context = ssl.create_default_context()  # Create a secure SSL context
     port = config['port']
@@ -202,10 +215,10 @@ def create_and_send_email():
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
 
+
 # Set to True before running the script and email will be composed and sent
 # Set to False before running the flask app
  # If True, them email is composed and sent
-
 
 def send_mail(send_report=False):
     if send_report:
@@ -214,9 +227,8 @@ def send_mail(send_report=False):
 
 
 
-
-if is_not_logged_in == False:
-    mailbox.logout()
+#if is_not_logged_in == False:
+#    mailbox.logout()
 # Log out from the email account
 #mailbox.logout()
 #mailbox.logout()

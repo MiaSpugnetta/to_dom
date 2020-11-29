@@ -1,3 +1,3 @@
-from to_dom import send_mail
+from to_dom_03 import send_mail
 
 send_mail(True)

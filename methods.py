@@ -4,6 +4,8 @@ from collections import defaultdict
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from database_methods import add_to_db
+#from deta import Deta
 
 
 # Function to get the config values from the Config file
@@ -15,7 +17,8 @@ def get_config(path):
 
 
 # Function to create the email dictionary
-def create_dict():
+def create_dict(mailbox, email_list):
+    #global msg_dict, msg
     # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
     use_stale = False
     if use_stale:  # (is True):
@@ -101,10 +104,37 @@ def capitalise_dict_values(dict_of_msgs):
     return final_dict
 
 
-# Function to add the messages to the database
-def add_to_db(dict_of_msgs):
-    for id, msg in dict_of_msgs.items():
-        db.put(msg, key=str(id))
+# Function to create the dictionary of messages. Returns a dict with capitalised subjects.
+def get_dict_of_msg(mailbox:MailBox, email:str, password:str, email_list:list, db):
+    mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
+
+    msg_dict = create_dict(mailbox, email_list)  # Create dictionary with relevant emails
+    dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise the first letter of the subject of the email
+    add_to_db(dict_of_msgs, db)  # Add the messages to the db
+    mailbox.logout()  # Logout from the email account
+
+    #if is_not_logged_in: # If set to True, get_dict_of_msg() function will get to the loop that begins with the logging into the email account and logout at the end of the same loop, else this happens in the create_and_send_email() function.
+    #    mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
+#
+    #    msg_dict = create_dict()  # Create dictionary with relevant emails
+    #    dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise the first letter of the subject of the email
+    #    add_to_db(dict_of_msgs)  # Add the messages to the db
+    #    mailbox.logout()  # Logout from the email account
+
+    #    #return dict_of_msgs
+#
+    #else:  # If already logged into email account
+    #    msg_dict = create_dict()  # Create dictionary with relevant emails
+    #    dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise subjects
+    #    #mailbox.logout()
+
+    return dict_of_msgs  # Return the dictionary of emails
+
+
+## Function to add the messages to the database
+#def add_to_db(dict_of_msgs, db):
+#    for id, msg in dict_of_msgs.items():
+#        db.put(msg, key=str(id))
 
 
 # Function that composes the body of the email to send
@@ -125,7 +155,9 @@ def generate_message(parsed_dict):
 
 
 # Function that composes and sends the email report
-def create_and_send_email():
+def create_and_send_email(mailbox, email, password, email_list, db):
+    msg_dict = get_dict_of_msg(mailbox, email, password, email_list, db)  # Create msg_dict
+
     context = ssl.create_default_context()  # Create a secure SSL context
     port = config['port']
     smtp_server = config['smtp_server']
@@ -142,3 +174,12 @@ def create_and_send_email():
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
 
+
+# Set to True before running the script and email will be composed and sent
+# Set to False before running the flask app
+ # If True, them email is composed and sent
+
+def send_mail(send_report=False):
+    if send_report:
+        create_and_send_email()  # Create email to be sent
+        print("Email has been sent!")
