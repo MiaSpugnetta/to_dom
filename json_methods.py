@@ -1,5 +1,5 @@
 import json
-
+#TODO: rename
 
 # Function to get the config values from the Config file
 def get_config(path):

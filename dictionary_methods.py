@@ -1,9 +1,13 @@
+#TODO: rename all methodds file and move to abstraction folder
+
 from imap_tools import AND
 from collections import defaultdict
 
 
 # Function to create the email dictionary
+# TODO: move it to email_methods
 def create_dict(mailbox, email_list):
+# TODO: move login and logout in this function
     # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
     use_stale = False
     if use_stale:  # (is True):

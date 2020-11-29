@@ -1,3 +1,6 @@
+
+# TODO: move config and mailbox stuff from todom
+# TODO: move create email and rename
 # Function that composes the body of the email to send
 def generate_message(parsed_dict):
     return_string = ''

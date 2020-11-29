@@ -1,8 +1,0 @@
-import stuff
-
-1. open config file
-2. create mailbox obj
-3. initialise db
-4. is not logged in status
-5. send_report status
-6. logout if needed

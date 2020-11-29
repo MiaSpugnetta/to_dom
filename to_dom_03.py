@@ -1,7 +1,6 @@
-# To access email account, fetch messages, uploading to database, creating email report and send it
+# Access email account, fetch messages, uploading to database, creating email report and send it
 from json_methods import get_config
-from imap_tools import MailBox #, AND
-from deta import Deta
+from imap_tools import MailBox
 from dictionary_methods import create_dict, capitalise_dict_values, parse_dict
 from database_methods import add_to_db
 from email_methods import generate_message
@@ -17,15 +16,10 @@ password = config['password']
 email = config['email']
 email_list = config['email_list']
 imap_server = config['imap_server']
-project_key = config['project_key']
 
 # Create mailbox object
 mailbox = MailBox(imap_server)
 
-# Initialize with a Project Key
-deta = Deta(project_key)
-# This connects to (or creates) a database
-db = deta.Base("test_emails_db")
 
 
 # Function to create the dictionary of messages. Adds messages to db. Returns a dict with capitalised subjects.
@@ -35,7 +29,7 @@ def get_dict_of_msg():#mailbox:MailBox, email:str, password:str, email_list:list
     dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise the first letter of the subject of the email
     mailbox.logout()  # Logout from the email account
 
-    add_to_db(dict_of_msgs, db)  # Add the messages to the db
+    add_to_db(dict_of_msgs)  # Add the messages to the db
 
     return dict_of_msgs  # Return the dictionary of emails
 
