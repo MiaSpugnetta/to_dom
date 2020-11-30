@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>To_dom</title>
+    <style>
+
+    body {
+      text-align: center;
+    }
+    </style>
+
+  </head>
+
+  <body>
+
+     <form method="post">
+      {{ form.csrf_token }}
+      {{ form.refresh_button() }}
+     </form>
+
+
+    {# {{ all_entries }} #}
+    {% for entry in all_entries %}
+      {% for dict in entry %}
+
+        <p>{{ dict }}</p>
+
+      {% endfor %}
+     {# {{ entry }} #}
+
+    {% endfor %}
+
+  </body>
+</html>

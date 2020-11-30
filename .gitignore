@@ -132,3 +132,5 @@ config.py
 config.json
 .idea
 test_files
+flask_config.py
+msg_dict.json
