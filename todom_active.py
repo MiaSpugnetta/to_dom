@@ -1,3 +1,3 @@
-from to_dom import send_mail
+from to_dom import send_report
 
-send_mail(True)
+send_report(True)
