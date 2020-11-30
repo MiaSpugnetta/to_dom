@@ -13,14 +13,14 @@ def get_dict_of_msg():
     return dict_of_msgs  # Return the dictionary of emails
 
 
-# Function that composes and sends the email report
+# Function that composes and sends the email report.
 def create_and_send_email():
     msg_dict = get_dict_of_msg()  # Create msg_dict
     parsed_dict = parse_dict(msg_dict)  # Create parsed dictionary
     text_email = generate_text_message(parsed_dict)  # Create text that goes in the body of the email
-    message = compose_msg(text_email)
+    message = compose_msg(text_email)  # Create actual email to be sent (email body, subject)
 
-    send_email(message)
+    send_email(message)  # Send composed email
 
 
 # Set to True before running the script and email will be composed and sent
@@ -28,5 +28,5 @@ def create_and_send_email():
 # If True, them email is composed and sent. Run external file (todom_active.py).
 def send_report(send_report=False):
     if send_report:
-        create_and_send_email()  # Create email to be sent
+        create_and_send_email()  # Create email to be sent and send it
         print("Email has been sent!")

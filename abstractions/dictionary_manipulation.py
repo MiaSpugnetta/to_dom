@@ -53,12 +53,9 @@ def parse_dict(msg_dict):
     return return_dict  # Returns a dictionary of dictionaries where the key is the subject (category) of the email and the value is a list of dictionaries that have that category as subject. Each of these subdictionary has then id and text as keys.
 
 
-# Function that composes the body of the email to send
+# Function that composes the body of the email to send.
 def generate_text_message(parsed_dict):
     return_string = ''
-    #{ TODO: format text in email (i.e. categories in bold)
-    #start = "\033[1m"
-    #end = "\033[0;0m" #}
     for subject in parsed_dict:  # For category in the dictionary:
         return_string += f"{subject}, number of mails: {len(parsed_dict[subject])}:\n\n"  # Append the name of the category and the number of messages that belong to that category.
 

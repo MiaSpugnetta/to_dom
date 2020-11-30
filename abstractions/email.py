@@ -7,12 +7,14 @@ from email.mime.multipart import MIMEMultipart
 
 config = get_config('./config.json')  # Get sensitive data stored in separate file
 
-# Values assigned to variables
+# Values assigned to variables.
+# Access account to fetch
 password = config['password']
 email = config['email']
 email_list = config['email_list']
 imap_server = config['imap_server']
 
+# Access account to send
 port = config['port']
 smtp_server = config['smtp_server']
 sender_email = config['sender_email']
@@ -22,7 +24,7 @@ receiver_email = config['receiver_email']
 mailbox = MailBox(imap_server)
 
 
-# Function to create the email dictionary
+# Function to create the email dictionary.
 def fetch_msgs_from_email():
     # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
     use_stale = False
@@ -60,13 +62,13 @@ def fetch_msgs_from_email():
 
 
 
-def compose_msg(text_email):#_and_send_email():
+def compose_msg(text_email):
     message = MIMEMultipart()  # Create message object
     message["Subject"] = "Daily report"  # Create subject of the email
     body_email = MIMEText(text_email)  # Create the body of the email
     message.attach(body_email)  # Attach the email body to the message
 
-    return message
+    return message  # Return composed email
 
 
 def send_email(message):
