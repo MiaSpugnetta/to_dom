@@ -16,3 +16,10 @@ db = deta.Base("test_emails_db")
 def add_to_db(dict_of_msgs):
     for id, msg in dict_of_msgs.items():
         db.put(msg, key=str(id))
+
+
+# Function to fetch the entries in the db.
+def get_db_entries():
+    all_entries = list(db.fetch())[0]
+
+    return all_entries

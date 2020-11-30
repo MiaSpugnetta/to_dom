@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>To_dom</title>
-    <style>
+{% extends "base.html" %}
 
-    body {
+  {% block content %}
+  <style>
+
+    form {
       text-align: center;
     }
-    </style>
-
-  </head>
-
-  <body>
-
+  </style>
      <form method="post">
       {{ form.csrf_token }}
       {{ form.refresh_button() }}
@@ -21,14 +15,8 @@
 
     {# {{ all_entries }} #}
     {% for entry in all_entries %}
-      {% for dict in entry %}
+        <p>{{ entry }}</p>
 
-        <p>{{ dict }}</p>
-
-      {% endfor %}
-     {# {{ entry }} #}
 
     {% endfor %}
-
-  </body>
-</html>
+  {% endblock %}
