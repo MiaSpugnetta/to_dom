@@ -4,41 +4,43 @@ from imap_tools import AND
 from collections import defaultdict
 
 
-# Function to create the email dictionary
-# TODO: move it to email_methods
-def create_dict(mailbox, email_list):
-# TODO: move login and logout in this function
-    # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
-    use_stale = False
-    if use_stale:  # (is True):
-        msg_dict = {
-            '4': {
-                'subject': 'TEST',
-                'text': '-- \r\nThomas Rost\r\n'
-            },
-            '5': {
-                'subject': 'test',
-                'text': 'This is a test.\r\n'
-            },
-            '6': {
-                'subject': 'Test 2',
-                'text': 'Mia is my favorite\r\n'
-            }
-        }
-        return msg_dict
-    else:
-        msg_dict = {}
-        for msg in mailbox.fetch(AND(all=True)):  # For message in inbox
-            if msg.from_ in email_list:  # If message from email addresses in the   email list
-                msg_dict[msg.uid] = {
-                    'subject': msg.subject,
-                    'text': msg.text
-                }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
-                mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
-                # db.put(msg)
-    # Prints number of email to the terminal
-    print(f"There are {len(msg_dict)} messages")
-    return msg_dict
+## Function to create the email dictionary
+## TODO: move it to email_methods
+#def create_dict(mailbox, email_list):
+## TODO: move login and logout in this function
+#    # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
+#    use_stale = False
+#    if use_stale:  # (is True):
+#        msg_dict = {
+#            '4': {
+#                'subject': 'TEST',
+#                'text': '-- \r\nThomas Rost\r\n'
+#            },
+#            '5': {
+#                'subject': 'test',
+#                'text': 'This is a test.\r\n'
+#            },
+#            '6': {
+#                'subject': 'Test 2',
+#                'text': 'Mia is my favorite\r\n'
+#            }
+#        }
+#        return msg_dict
+#    else:
+#        msg_dict = {}
+#        mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
+#        for msg in mailbox.fetch(AND(all=True)):  # For message in inbox
+#            if msg.from_ in email_list:  # If message from email addresses in the   email list
+#                msg_dict[msg.uid] = {
+#                    'subject': msg.subject,
+#                    'text': msg.text
+#                }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
+#                mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
+#        mailbox.logout()  # Logout from the email account
+#
+#    # Prints number of email to the terminal
+#    print(f"There are {len(msg_dict)} messages")
+#    return msg_dict
 
 
 # Function to capitalise subject values in the original dictionary {id: {'subject':subject, 'text':text}, ...}

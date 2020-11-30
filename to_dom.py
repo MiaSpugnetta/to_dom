@@ -1,9 +1,9 @@
 # Access email account, fetch messages, uploading to database, creating email report and send it
-from json_methods import get_config
-from imap_tools import MailBox
-from dictionary_methods import create_dict, capitalise_dict_values, parse_dict
-from database_methods import add_to_db
-from email_methods import generate_message
+from abstractions.configuration_path import get_config
+#from imap_tools import MailBox
+from abstractions.dictionary_manipulation import capitalise_dict_values, parse_dict
+from abstractions.database import add_to_db
+from abstractions.email import fetch_msgs_from_email, generate_text_message
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -12,22 +12,22 @@ from email.mime.multipart import MIMEMultipart
 config = get_config('config.json')  # Get sensitive data stored in separate file
 
 # Values assigned to variables
-password = config['password']
-email = config['email']
-email_list = config['email_list']
-imap_server = config['imap_server']
+#password = config['password']
+#email = config['email']
+#email_list = config['email_list']
+#imap_server = config['imap_server']
 
-# Create mailbox object
-mailbox = MailBox(imap_server)
+## Create mailbox object
+#mailbox = MailBox(imap_server)
 
 
 
 # Function to create the dictionary of messages. Adds messages to db. Returns a dict with capitalised subjects.
 def get_dict_of_msg():#mailbox:MailBox, email:str, password:str, email_list:list, db):
-    mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
-    msg_dict = create_dict(mailbox, email_list)  # Create dictionary with relevant emails
+    #mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
+    msg_dict = fetch_msgs_from_email()#mailbox, email_list)  # Create dictionary with relevant emails
     dict_of_msgs = capitalise_dict_values(msg_dict)  # Capitalise the first letter of the subject of the email
-    mailbox.logout()  # Logout from the email account
+    #mailbox.logout()  # Logout from the email account
 
     add_to_db(dict_of_msgs)  # Add the messages to the db
 
@@ -42,11 +42,12 @@ def create_and_send_email():#mailbox, email, password, email_list, db):
     port = config['port']
     smtp_server = config['smtp_server']
     sender_email = config['sender_email']
+    password = config['password']
     receiver_email = config['receiver_email']
     message = MIMEMultipart()  # Create message object
     message["Subject"] = "Daily report"  # Create subject of the email
     parsed_dict = parse_dict(msg_dict)  # Create parsed dictionary
-    text_email = generate_message(parsed_dict)  # Create text that goes in the body of the email
+    text_email = generate_text_message(parsed_dict)  # Create text that goes in the body of the email
     body_email = MIMEText(text_email)  # Create the body of the email
     message.attach(body_email)  # Attach the email body to the message
     # Send composed email

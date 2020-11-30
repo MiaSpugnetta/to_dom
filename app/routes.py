@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template
 from flask_config import db
-from to_dom_03 import get_dict_of_msg
+from to_dom import get_dict_of_msg
 # from methods import add_to_db
 from .forms import ButtonInput
 
