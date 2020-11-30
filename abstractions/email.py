@@ -23,7 +23,7 @@ mailbox = MailBox(imap_server)
 
 
 # Function to create the email dictionary
-def fetch_msgs_from_email():#mailbox, email_list):
+def fetch_msgs_from_email():
     # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
     use_stale = False
     if use_stale:  # (is True):
@@ -58,22 +58,6 @@ def fetch_msgs_from_email():#mailbox, email_list):
     print(f"There are {len(msg_dict)} messages")
     return msg_dict
 
-
-# Function that composes the body of the email to send
-def generate_text_message(parsed_dict):
-    return_string = ''
-    #{ TODO: format text in email (i.e. categories in bold)
-    #start = "\033[1m"
-    #end = "\033[0;0m" #}
-    for subject in parsed_dict:  # For category in the dictionary:
-        return_string += f"{subject}, number of mails: {len(parsed_dict[subject])}:\n\n"  # Append the name of the category and the number of messages that belong to that category.
-
-        for content in parsed_dict[subject]:  # For each subdictionary:
-            return_string += f"{content['id']}: {content['text']}\n"  # Append the id number (so to have a kind of chronological order) and the actual body to the message in the making.
-
-        return_string += '_________________________\n\n\n'  # Add a separator after each category.
-
-    return return_string  # Return composed message (text that goes in the body of the email)
 
 
 def compose_msg(text_email):#_and_send_email():
