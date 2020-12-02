@@ -1,6 +1,6 @@
 from abstractions.configuration_path import get_config
 from deta import Deta
-
+import json
 
 config = get_config('./config.json')  # Get sensitive data stored in separate file
 
@@ -25,8 +25,14 @@ def get_db_entries():
     return all_entries
 
 
-# Function to fetch entries grouped by subject.
-def get_db_entries_by_category(subject:str):
-    entries_of_subject = list(db.fetch(subject))
+# Function to fetch entries from db with specific key. If not specified returns all entries.
+def get_db_entries_by_subject(subject:str=''):  # Default = False, returns all
+# TODO write unittest for this
+
+    if subject:
+        entries_of_subject = list(db.fetch({"subject":subject}))[0]
+
+    else:
+        entries_of_subject = list(db.fetch())[0]
 
     return entries_of_subject

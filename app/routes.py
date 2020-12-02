@@ -1,6 +1,6 @@
 from app import app
 from flask import redirect, render_template
-from abstractions.database import get_db_entries, get_db_entries_by_category
+from abstractions.database import get_db_entries, get_db_entries_by_subject
 from abstractions.dictionary_manipulation import parse_dict
 from collections import defaultdict, ChainMap
 from to_dom import get_dict_of_msg
@@ -57,59 +57,44 @@ def index():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    list_of_entries = get_db_entries()
-    #parsed_dict = parse_dict(msg_dict)
-    #msg_dict = defaultdict
-    print(list_of_entries)
-    print(type(list_of_entries))
+    list_of_entries = get_db_entries_by_subject()  # Return a list of all the entries in db as dictionaries in the form of [{subject:<sub>, key:<key>, text:<text>}, {}, ... ].
+
     msg_dict = defaultdict(list)
-    #msg_dict = {k:v for e in list_of_entries for k,v in e.items()}# for (k,v) in e.items()}
 
-    #msg_dict = dict(enumerate(list_of_entries))
-
-    #msg_dict=ChainMap(*list_of_entries)
-
-    #msg_dict = { {get_key(): {k:v}} for e in list_of_entries for k,v in e.items()}
-
-    #keys: ['mia','is','the','favourite']
-    #values: [True, True, True, True]
-    #new_dict = {k:v for k,v in zip(keys, values)} -> dictionary
-
-    #for entry in list_of_entries:
-    #    msg_dict.update(entry)
-
-    #for entry in list_of_entries:
-    #    key = entry['key']
-    #    msg_dict[key] = entry
-
-    # Returns a dictionary of dictionary from the list_of_entries
+    # Returns a dictionary of dictionaries from the list_of_entries.
     for entry in list_of_entries:
-        subject = entry.pop('subject')  # Pops the key from the inner dict, so that it's just the key and the dict is the value
-        msg_dict[subject].append(entry)  # The entry becomes the value
-
-
-    #dict[new_key] = new_value
-    #list.append(new_value)
-
-    #new_dict = { {entry[key]:entry} for entry in list_of_dicts }
-
-    print("####################################")
-    print(msg_dict)
+        subject = entry.pop('subject')  # Pops the key from the inner dict, returns the value
+        msg_dict[subject].append(entry)  # The entry becomes the value of the key=subject.
+        # msg_dict = { <subject1> : [{'key':<key>, 'text':<text>}, {}, ...],
+        #              <subject2>: [{ }, {}, ...},
+        #               ... }
 
     list_of_subjects = []
     for subject in msg_dict:
-        list_of_subjects.append(subject)
-
-    print(list_of_subjects)
+       list_of_subjects.append(subject)
 
 
-    #parsed_dict = defaultdict(list)
-    #for id in msg_dict:
-    #    append_dict = {'id':id, 'text':msg_dict[id]['text']}
-    #    parsed_dict[msg_dict[id]['subject']].append(append_dict)
-    #print(parsed_dict)
-#
-    return render_template("test.html", msg_dict=msg_dict)
+    entry_list = []
+
+    for sub in list_of_subjects:
+        mail_list = get_db_entries_by_subject(sub)  # Fetch entries from db with specified subject
+        dict_by_sub = {"subject":sub, "mails":mail_list}  # Create dict with key:sub and key:[list of all {entries} that have that subject]
+        entry_list.append(dict_by_sub)  # Append created dict to the list
+        # Create a list structured as: [
+        #                               {'subject':<subject>,
+        #                                'mails':[
+        #                                         {'key':<key>, 'subject':<subject>, 'text':<text>},
+        #                                         {...},
+        #                                         {...}
+        #                                         ]
+        #                                },
+        #                                { 'subject':<subject2>, 'mails':[{}, {}, {}]}, ... ]
+
+
+    print("THIS ##################################")
+    print(entry_list)
+
+    return render_template("test.html", list_of_entries=entry_list)
 
 # TODO:
 # refresh db(POST)
