@@ -36,3 +36,12 @@ def get_db_entries_by_subject(subject:str=''):  # Default = False, returns all
         entries_of_subject = list(db.fetch())[0]
 
     return entries_of_subject
+
+
+# Function to add field to entries.
+#TODO: test this
+def add_field(key:str):
+
+    updates = {'done':True}
+    db.update(updates, key)
+

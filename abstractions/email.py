@@ -1,4 +1,4 @@
-from abstractions.configuration_path import get_config
+from abstractions.configuration_path import get_config, write_to_file
 from imap_tools import MailBox, AND
 import smtplib, ssl
 from email.mime.text import MIMEText
@@ -53,11 +53,18 @@ def fetch_msgs_from_email():
                     'subject': msg.subject,
                     'text': msg.text
                 }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
+
+                write_to_file('./msg_dict.json', msg)  # Add msg to the json dict file
+
                 mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
+
+                mailbox.move(msg.uid, 'Already_read')  # Move message from inbox to "Already_read" folder
+
         mailbox.logout()  # Logout from the email account
 
-    # Prints number of email to the terminal
+    # Print number of email to the terminal
     print(f"There are {len(msg_dict)} messages")
+
     return msg_dict
 
 
