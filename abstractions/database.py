@@ -23,3 +23,10 @@ def get_db_entries():
     all_entries = list(db.fetch())[0]
 
     return all_entries
+
+
+# Function to fetch entries grouped by subject.
+def get_db_entries_by_category(subject:str):
+    entries_of_subject = list(db.fetch(subject))
+
+    return entries_of_subject

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
+ {{ msg_dict }}
+
+{% for entry in msg_dict %}
+
+<p>{{ entry }}</p>
+{% endfor %}
+
+
+{% endblock content %}

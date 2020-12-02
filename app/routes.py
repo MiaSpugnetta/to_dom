@@ -1,6 +1,8 @@
 from app import app
 from flask import redirect, render_template
-from abstractions.database import get_db_entries
+from abstractions.database import get_db_entries, get_db_entries_by_category
+from abstractions.dictionary_manipulation import parse_dict
+from collections import defaultdict, ChainMap
 from to_dom import get_dict_of_msg
 from .forms import ButtonInput
 
@@ -55,7 +57,59 @@ def index():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    pass
+    list_of_entries = get_db_entries()
+    #parsed_dict = parse_dict(msg_dict)
+    #msg_dict = defaultdict
+    print(list_of_entries)
+    print(type(list_of_entries))
+    msg_dict = defaultdict(list)
+    #msg_dict = {k:v for e in list_of_entries for k,v in e.items()}# for (k,v) in e.items()}
+
+    #msg_dict = dict(enumerate(list_of_entries))
+
+    #msg_dict=ChainMap(*list_of_entries)
+
+    #msg_dict = { {get_key(): {k:v}} for e in list_of_entries for k,v in e.items()}
+
+    #keys: ['mia','is','the','favourite']
+    #values: [True, True, True, True]
+    #new_dict = {k:v for k,v in zip(keys, values)} -> dictionary
+
+    #for entry in list_of_entries:
+    #    msg_dict.update(entry)
+
+    #for entry in list_of_entries:
+    #    key = entry['key']
+    #    msg_dict[key] = entry
+
+    # Returns a dictionary of dictionary from the list_of_entries
+    for entry in list_of_entries:
+        subject = entry.pop('subject')  # Pops the key from the inner dict, so that it's just the key and the dict is the value
+        msg_dict[subject].append(entry)  # The entry becomes the value
+
+
+    #dict[new_key] = new_value
+    #list.append(new_value)
+
+    #new_dict = { {entry[key]:entry} for entry in list_of_dicts }
+
+    print("####################################")
+    print(msg_dict)
+
+    list_of_subjects = []
+    for subject in msg_dict:
+        list_of_subjects.append(subject)
+
+    print(list_of_subjects)
+
+
+    #parsed_dict = defaultdict(list)
+    #for id in msg_dict:
+    #    append_dict = {'id':id, 'text':msg_dict[id]['text']}
+    #    parsed_dict[msg_dict[id]['subject']].append(append_dict)
+    #print(parsed_dict)
+#
+    return render_template("test.html", msg_dict=msg_dict)
 
 # TODO:
 # refresh db(POST)
