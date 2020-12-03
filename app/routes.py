@@ -1,6 +1,6 @@
 from app import app
-from flask import redirect, render_template
-from abstractions.database import get_db_entries
+from flask import redirect, render_template, url_for
+from abstractions.database import get_db_entries, add_field, get_entry
 from abstractions.dictionary_manipulation import parse_dict
 from collections import defaultdict, ChainMap
 from to_dom import get_dict_of_msg
@@ -100,3 +100,46 @@ def test():
 # refresh db(POST)
 # if press button:
 # to_dom.py run
+
+
+@app.route('/test_2', methods=['GET', 'POST'])
+def test_2():
+    list_of_entries = get_db_entries()  # Return a list of all the entries in db as dictionaries in the form of [{subject:<sub>, key:<key>, text:<text>}, {}, ... ].
+
+    msg_dict = defaultdict(list)
+
+    # Returns a dictionary of dictionaries from the list_of_entries.
+    for entry in list_of_entries:
+        subject = entry.pop('subject')  # Pops the key from the inner dict, returns the value
+        msg_dict[subject].append(entry)  # The entry becomes the value of the
+
+    list_of_subjects = []
+    for subject in msg_dict:
+        list_of_subjects.append(subject)
+
+    entry_list = []
+
+    for sub in list_of_subjects:
+        mail_list = get_db_entries(sub)  # Fetch entries from db with specified subject
+        dict_by_sub = {"subject": sub, "mails": mail_list}  # Create dict with key:sub and key:[list of all {entries} that have that subject]
+        entry_list.append(dict_by_sub)  # Append created dict to the list
+
+    return render_template("test_2.html", list_of_entries=entry_list)
+
+
+@app.route('/mark_as_done/<key>', methods=['GET', 'POST'])
+def mark_as_done(key):
+    #list_of_entries = get_db_entries()
+    #for entry in list_of_entries:
+    #    if entry['key'] == key:
+    #            add_field(key)
+    #add_field(key)
+    entry = get_entry(key)
+    #print(entry)
+    assert entry['key'] == key, 'wrong item'
+    add_field(key)
+    print(f'this is the key: {key}')
+
+
+
+    return redirect(url_for('test_2'))

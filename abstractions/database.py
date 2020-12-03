@@ -45,3 +45,9 @@ def add_field(key:str):
     updates = {'done':True}
     db.update(updates, key)
 
+
+# Function to retrieve an entry.
+def get_entry(key:str):
+    entry = db.get(key)
+
+    return entry
