@@ -184,13 +184,14 @@ def done():
     return render_template("done.html", entry_list=entry_list)
 
 
-@app.route('/mark_as_undone/<key>', methods=['GET', 'POST'])
-def mark_as_undone(key):
+@app.route('/mark_undone/<key>', methods=['GET', 'POST'])
+def mark_undone(key):
 
     entry = get_entry(key)
     #print(entry)
     assert entry['key'] == key, 'wrong item'
-    print(entry)
+    print(key)
+    #print(entry)
     print(key)
     mark_as_undone(key)
     #print(f'this is the key: {key}')
