@@ -6,11 +6,11 @@ def get_config(path):
     with open(path, 'r') as config_file:
         config_str = config_file.read()
     config = json.loads(config_str)
+
     return config
 
 
 # Function to write to json file
-
 def write_to_file(path, msg):
     with open(path, 'r') as file:
         data = json.load(file)

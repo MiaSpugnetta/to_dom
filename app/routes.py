@@ -1,6 +1,6 @@
 from app import app
 from flask import redirect, render_template
-from abstractions.database import get_db_entries, get_db_entries_by_subject
+from abstractions.database import get_db_entries
 from abstractions.dictionary_manipulation import parse_dict
 from collections import defaultdict, ChainMap
 from to_dom import get_dict_of_msg
@@ -57,7 +57,7 @@ def index():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    list_of_entries = get_db_entries_by_subject()  # Return a list of all the entries in db as dictionaries in the form of [{subject:<sub>, key:<key>, text:<text>}, {}, ... ].
+    list_of_entries = get_db_entries()  # Return a list of all the entries in db as dictionaries in the form of [{subject:<sub>, key:<key>, text:<text>}, {}, ... ].
 
     msg_dict = defaultdict(list)
 
@@ -77,7 +77,7 @@ def test():
     entry_list = []
 
     for sub in list_of_subjects:
-        mail_list = get_db_entries_by_subject(sub)  # Fetch entries from db with specified subject
+        mail_list = get_db_entries(sub)  # Fetch entries from db with specified subject
         dict_by_sub = {"subject":sub, "mails":mail_list}  # Create dict with key:sub and key:[list of all {entries} that have that subject]
         entry_list.append(dict_by_sub)  # Append created dict to the list
         # Create a list structured as: [

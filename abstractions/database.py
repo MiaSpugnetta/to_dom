@@ -18,15 +18,15 @@ def add_to_db(dict_of_msgs):
         db.put(msg, key=str(id))
 
 
-# Function to fetch the entries in the db.
-def get_db_entries():
-    all_entries = list(db.fetch())[0]
+## Function to fetch the entries in the db.
+#def get_db_entries():
+#    all_entries = list(db.fetch())[0]
+#
+#    return all_entries
 
-    return all_entries
 
-
-# Function to fetch entries from db with specific key. If not specified returns all entries.
-def get_db_entries_by_subject(subject:str=''):  # Default = False, returns all
+# Function to fetch entries from db. If parameter specified, filtered. If not, returns all entries.
+def get_db_entries(subject:str= ''):  # Default = False, returns all
 # TODO write unittest for this
 
     if subject:

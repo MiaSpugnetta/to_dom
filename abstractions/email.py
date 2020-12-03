@@ -1,4 +1,4 @@
-from abstractions.configuration_path import get_config, write_to_file
+from abstractions.configuration_path import get_config, write_to_file, load_from_file
 from imap_tools import MailBox, AND
 import smtplib, ssl
 from email.mime.text import MIMEText
@@ -24,7 +24,7 @@ receiver_email = config['receiver_email']
 mailbox = MailBox(imap_server)
 
 
-# Function to create the email dictionary.
+# Function to create the email dictionary. Login into email account. If new relevant emails, add to dict_file. Copy email to folder1 and move email to folder2. Logout from account. Print # of new messages fetched, create dict to be returned from file. Return dict.
 def fetch_msgs_from_email():
     # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
     use_stale = False
@@ -62,10 +62,12 @@ def fetch_msgs_from_email():
 
         mailbox.logout()  # Logout from the email account
 
-    # Print number of email to the terminal
-    print(f"There are {len(msg_dict)} messages")
+    # Print number of new email to the terminal
+    print(f"There are {len(msg_dict)} new messages")
 
-    return msg_dict
+    use_this_dict = load_from_file('./msg_dict.json')  # Loads the dict from json file
+
+    return use_this_dict #msg_dict
 
 
 
