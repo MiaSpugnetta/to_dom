@@ -139,6 +139,10 @@ def mark_as_done(key):
     assert entry['key'] == key, 'wrong item'
     add_field(key)
     print(f'this is the key: {key}')
+    print(entry['subject'])
+
+
+    print(entry)
 
 
 

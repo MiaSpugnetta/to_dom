@@ -1,0 +1,3 @@
+from abstractions.database import update_all_db_entries
+
+update_all_db_entries()

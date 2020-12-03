@@ -46,21 +46,23 @@ def fetch_msgs_from_email():
         return msg_dict
     else:
         msg_dict = {}
-        mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
-        for msg in mailbox.fetch(AND(all=True)):  # For message in inbox
-            if msg.from_ in email_list:  # If message from email addresses in the   email list
-                msg_dict[msg.uid] = {
-                    'subject': msg.subject,
-                    'text': msg.text
-                }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
+        mailbox = MailBox(imap_server)
+        with mailbox.login(email, password, initial_folder='INBOX') as mailbox:
+        #mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
+            for msg in mailbox.fetch(AND(all=True)):  # For message in inbox
+                if msg.from_ in email_list:  # If message from email addresses in the   email list
+                    msg_dict[msg.uid] = {
+                        'subject': msg.subject,
+                        'text': msg.text
+                    }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
 
-                write_to_file('./msg_dict.json', msg)  # Add msg to the json dict file
+                    write_to_file('./msg_dict.json', msg)  # Add msg to the json dict file
 
-                mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
+                    mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
 
-                mailbox.move(msg.uid, 'Already_read')  # Move message from inbox to "Already_read" folder
+                    mailbox.move(msg.uid, 'Already_read')  # Move message from inbox to "Already_read" folder
 
-        mailbox.logout()  # Logout from the email account
+        #mailbox.logout()  # Logout from the email account
 
     # Print number of new email to the terminal
     print(f"There are {len(msg_dict)} new messages")

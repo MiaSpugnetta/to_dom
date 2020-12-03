@@ -26,11 +26,11 @@ def add_to_db(dict_of_msgs):
 
 
 # Function to fetch entries from db. If parameter specified, filtered. If not, returns all entries.
-def get_db_entries(subject:str= ''):  # Default = False, returns all
+def get_db_entries(subject:str= '', done:bool=False):  # Default = False, returns all
 # TODO write unittest for this
 
     if subject:
-        entries_of_subject = list(db.fetch({"subject":subject}))[0]
+        entries_of_subject = list(db.fetch({"subject":subject, 'done':done}))[0]
 
     else:
         entries_of_subject = list(db.fetch())[0]
@@ -51,3 +51,23 @@ def get_entry(key:str):
     entry = db.get(key)
 
     return entry
+
+
+def update_all_db_entries():
+    all_entries = list(db.fetch())[0]
+
+    done_field = {'done':False}
+
+    for entry in all_entries:
+        key = entry['key']
+        db.update(done_field, key)
+
+
+
+
+#def move_entry(entry):
+#    entry['subject'] = 'Done'
+    #key = entry["key"]
+    #db.update(entry, key)
+
+#    return entry
