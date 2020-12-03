@@ -1,6 +1,6 @@
 from app import app
 from flask import redirect, render_template, url_for
-from abstractions.database import get_db_entries, add_field, get_entry
+from abstractions.database import get_db_entries, add_field, get_entry, mark_as_undone
 from abstractions.dictionary_manipulation import parse_dict
 from collections import defaultdict, ChainMap
 from to_dom import get_dict_of_msg
@@ -138,16 +138,17 @@ def mark_as_done(key):
     #print(entry)
     assert entry['key'] == key, 'wrong item'
     add_field(key)
-    print(f'this is the key: {key}')
-    print(entry['subject'])
-    print(entry)
+    #print(f'this is the key: {key}')
+    #print(entry['subject'])
+    #print(entry)
 
     return redirect(url_for('test_2'))
 
 
 @app.route('/done', methods=['GET', 'POST'])
 def done():
-    list_of_entries= get_db_entries(done=True)
+    list_of_entries = get_db_entries(done=True)
+    #print(list_of_entries)
     msg_dict = defaultdict(list)
 
     # Returns a dictionary of dictionaries from the list_of_entries.
@@ -155,16 +156,45 @@ def done():
         subject = entry.pop('subject')  # Pops the key from the inner dict, returns the value
         msg_dict[subject].append(entry)  # The entry becomes the value of the
 
-    list_of_subjects = []
-    for subject in msg_dict:
-        list_of_subjects.append(subject)
-
+    #print("^^^^^^^^^^^^^^^^^^^")
+    #print(msg_dict)
+    #list_of_subjects = []
+    #for subject in msg_dict:
+    #    list_of_subjects.append(subject)
+#
     entry_list = []
+    #print(list_of_subjects)
+#
+    for sub, msg_list in msg_dict.items():
+        #print(f'this is sub {sub}, this is list {msg_list}')
+        dict_by_sub = {'subject':sub, 'mails':msg_list}
+        entry_list.append(dict_by_sub)
+        #print(f'this is the dict {dict_by_sub}, \n \n\nthis is the list{entry_list}')
+        #for mail_list
+        #for
 
-    for sub in list_of_subjects:
-        mail_list = get_db_entries(sub, True)  # Fetch entries from db with specified subject
-        dict_by_sub = {"subject": sub, "mails": mail_list}  # Create dict with key:sub and key:[list of all {entries} that have that subject]
-        entry_list.append(dict_by_sub)  # Append created dict to the list
-    print(entry_list)
+#    for sub in list_of_subjects:
+#        mail_list = get_db_entries(sub)  # Fetch entries from db with specified subject
+#        dict_by_sub = {"subject": sub, "mails": mail_list}  # Create dict with key:sub and key:[list of all {entries} that have that subject]
+#        entry_list.append(dict_by_sub)  # Append created dict to the list
+#    #print(entry_list)
+#    #for entry in entry_list:
+#        #print(entry)
 
-    return render_template("test_2.html", list_of_entries=entry_list)
+    return render_template("done.html", entry_list=entry_list)
+
+
+@app.route('/mark_as_undone/<key>', methods=['GET', 'POST'])
+def mark_as_undone(key):
+
+    entry = get_entry(key)
+    #print(entry)
+    assert entry['key'] == key, 'wrong item'
+    print(entry)
+    print(key)
+    mark_as_undone(key)
+    #print(f'this is the key: {key}')
+    #print(entry['subject'])
+    #print(entry)
+
+    return redirect(url_for('done'))

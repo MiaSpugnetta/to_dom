@@ -29,11 +29,14 @@ def add_to_db(dict_of_msgs):
 def get_db_entries(subject:str= '', done:bool=False):  # Default = False, returns all
 # TODO write unittest for this
 
-    if subject:
+    if subject:#or done:
         entries_of_subject = list(db.fetch({"subject":subject, 'done':done}))[0]
 
+        #return entries_of_subject
+    elif done:
+        entries_of_subject = list(db.fetch({'done':done}))[0]
     else:
-        entries_of_subject = list(db.fetch())[0]
+        entries_of_subject = list(db.fetch({}))[0]
 
     return entries_of_subject
 
@@ -62,6 +65,10 @@ def update_all_db_entries():
         key = entry['key']
         db.update(done_field, key)
 
+
+def mark_as_undone(key:str):
+    updates = {'done':False}
+    db.update(updates, key)
 
 
 
