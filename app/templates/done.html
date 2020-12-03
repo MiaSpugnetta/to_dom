@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+
+{{ entry_list }}
+
+{% for entry in list_of_entries %}
+{{ entry }}
+{%endfor%}
+{% endblock %}
