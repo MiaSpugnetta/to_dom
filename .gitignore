@@ -135,3 +135,4 @@ test_files
 flask_config.py
 msg_dict.json
 local_dict.json
+.deta
