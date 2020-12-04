@@ -14,49 +14,25 @@ db = deta.Base("test_emails_db")
 
 # Function to add the messages to the database.
 def add_to_db(dict_of_msgs):
+
     for id, msg in dict_of_msgs.items():
         db.put(msg, key=str(id))
-
-
-# Function to add the messages to the database.
-#def add_to_db(dict_of_msgs):
-#    entries_in_db = get_db_entries()
-#
-#    for id, msg in dict_of_msgs.items():
-#        for entry in entries_in_db:
-#            if msg['text'] == entry['text']:
-#                db.delete()
-#        db.put(msg, key=str(id))
-
-## Function to fetch the entries in the db.
-#def get_db_entries():
-#    all_entries = list(db.fetch())[0]
-#
-#    return all_entries
 
 
 # Function to fetch entries from db. If parameter specified, filtered. If not, returns all entries.
 def get_db_entries(subject:str= '', done:bool=False):  # Default = False, returns all
 # TODO write unittest for this
 
-    if subject:#or done:
+    if subject:
         entries_of_subject = list(db.fetch({"subject":subject, 'done':done}))[0]
 
-        #return entries_of_subject
     elif done:
         entries_of_subject = list(db.fetch({'done':done}))[0]
+
     else:
         entries_of_subject = list(db.fetch({}))[0]
 
     return entries_of_subject
-
-
-# Function to add field to entries.
-#TODO: test this
-def add_field(key:str):
-
-    updates = {'done':True}
-    db.update(updates, key)
 
 
 # Function to retrieve an entry.
@@ -66,30 +42,19 @@ def get_entry(key:str):
     return entry
 
 
-def update_all_db_entries():
-    all_entries = list(db.fetch())[0]
+# Function to update an entry
+def update_entry(updates:dict, key:str):
 
-    done_field = {'done':False}
-
-    for entry in all_entries:
-        key = entry['key']
-        db.update(done_field, key)
-
-
-def mark_as_undone(key:str):
-    updates = {'done':False}
     db.update(updates, key)
 
 
-def remove_double_entries():
-    all_entries = list(db.fetch())[0]
-    #new_list = []
-    for entry in all_entries:
-        if 'done' not in entry:
-            #new_list.append(entry)
-            db.delete(entry['key'])
+# Function to remove an entry.
+def remove_entry(key):
+
+    db.delete(key)
 
 
+# Function to remove all entries.
 def remove_all_entries():
     all_entries = list(db.fetch())[0]
 

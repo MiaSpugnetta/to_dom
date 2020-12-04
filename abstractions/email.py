@@ -48,35 +48,27 @@ def fetch_new_msgs_from_email():
         msg_dict = {}
         mailbox = MailBox(imap_server)
         with mailbox.login(email, password, initial_folder='INBOX') as mailbox:
-        #mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
             for msg in mailbox.fetch(AND(all=True)):  # For message in inbox
                 if msg.from_ in email_list:  # If message from email addresses in the   email list
                     msg_dict[msg.uid] = {
                         'subject': msg.subject,
                         'text': msg.text,
                         'date': msg.date_str
-                    }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
+                    }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category), date and body of the email.
 
-                    #write_to_file('./msg_dict.json', msg)  # Add msg to the json dict file
-
-                    write_to_file('./local_dict.json', msg)
+                    write_to_file('./local_dict.json', msg)  # Add msg to the json dict file
 
                     mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
 
                     mailbox.move(msg.uid, 'Already_read')  # Move message from inbox to "Already_read" folder
 
-        #mailbox.logout()  # Logout from the email account
-
     # Print number of new email to the terminal
     print(f"There are {len(msg_dict)} new messages")
-
-    #use_this_dict = load_from_file('./msg_dict.json')  # Loads the dict from json file
-
-    #return use_this_dict #msg_dict
 
     return msg_dict
 
 
+# Function to create an email dictionary with all the relevant emails.
 def fetch_all_relevant_emails():
     msg_dict = {}
     mailbox = MailBox(imap_server)
@@ -89,17 +81,14 @@ def fetch_all_relevant_emails():
                 'subject': msg.subject,
                 'text': msg.text,
                 'date': msg.date_str
-            }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
+            }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category), body of the email and date.
 
     print(f"There are {len(msg_dict)} relevant emails")
 
-    print(msg_dict)
     return msg_dict
 
 
-
-
-
+# Function to compose the email.
 def compose_msg(text_email):
     message = MIMEMultipart()  # Create message object
     message["Subject"] = "Daily report"  # Create subject of the email
@@ -109,6 +98,7 @@ def compose_msg(text_email):
     return message  # Return composed email
 
 
+# Function to send the email.
 def send_email(message):
     context = ssl.create_default_context()  # Create a secure SSL context
     with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:  # Makes sure that the connection is automatically closed at the end of the indented code block. If port is 0 or not specified, standard port for SMTP over SSL is 465.

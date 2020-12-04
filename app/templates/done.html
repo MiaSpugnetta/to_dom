@@ -1,14 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 
-{#{{ entry_list }}#}
+
+<h3>Tasks done: {{ number_of_items }}</h3>
+<br>
 
 {% for entry in entry_list %}
-<h3>{{ entry.subject }}</h3>
-{% for mail in entry.mails %}
-    <p>{{ mail.key }}: {{ mail.text | urlize }}</p>
-    <span class="pull-right"><a class="text-danger" href="{{ url_for('mark_undone', key=mail.key) }}">[undo]</a></span>
+    <h3>{{ entry.subject }}</h3>
 
-    {%endfor%}
-{%endfor%}
+    {% for mail in entry.mails %}
+        <p>{{ mail.key }}: {{ mail.text | urlize }}</p>
+        <span class="pull-right"><a class="text-danger" href="{{ url_for('mark_undone', key=mail.key) }}">[undo]</a></span>
+
+    {% endfor %}
+
+    <p>________________________________</p>
+
+{% endfor %}
+
 {% endblock %}
