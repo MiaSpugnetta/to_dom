@@ -15,7 +15,7 @@ def write_to_file(path, msg):
     with open(path, 'r') as file:
         data = json.load(file)
 
-        data[msg.uid] = {'subject': msg.subject, 'text': msg.text, 'date': msg.date}
+        data[msg.uid] = {'subject': msg.subject, 'text': msg.text, 'date': msg.date_str}
 
     with open(path, 'w') as file:
         json.dump(data, file, indent=4, sort_keys=True)
