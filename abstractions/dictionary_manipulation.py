@@ -29,8 +29,9 @@ def parse_dict(msg_dict):
 
     for id in msg_dict:  # For message in the dictionary:
         append_dict = {  # Create dictionary that contains
-                    'id': id,  # Number that identify the email (id=1 for first email, increases regularly, by one - duh). Basically an index.
-                    'text': msg_dict[id]['text']  # Object+body of the email at said index (id).
+                    'id': id,  # Number that identify the email, it is NOT in order by date # (id=1 for first email, increases regularly, by one - duh). Basically an index.
+                    'text': msg_dict[id]['text'],  # Object+body of the email at said index (id).
+                    'date': msg_dict[id]['date']
         }
 
         return_dict[msg_dict[id]['subject'].capitalize()].append(append_dict)  # Original dictionary was structured as:
@@ -60,7 +61,7 @@ def generate_text_message(parsed_dict):
         return_string += f"{subject}, number of mails: {len(parsed_dict[subject])}:\n\n"  # Append the name of the category and the number of messages that belong to that category.
 
         for content in parsed_dict[subject]:  # For each subdictionary:
-            return_string += f"{content['id']}: {content['text']}\n"  # Append the id number (so to have a kind of chronological order) and the actual body to the message in the making.
+            return_string += f"{content['date']} (id: {content['id']}): {content['text']}\n"  # Append the id number (so to have a kind of chronological order) and the actual body to the message in the making.
 
         return_string += '_________________________\n\n\n'  # Add a separator after each category.
 

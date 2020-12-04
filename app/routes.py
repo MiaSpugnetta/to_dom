@@ -47,7 +47,7 @@ def index():
 #. in post set done = True
 #4. Make sure only tasks with done = False are shown in frontend
 # 4.1. either via frontned (hack) or
-#4.2. by only takind from the DB the entries that aren't done
+#4.2. by only takind from the DB the entries that aren't done <_________________________________
 # 5. bonus: Display how many tasks are in done status
 #6. bonus: write unit tests for the above backend hndling stuff - importznt here to s you dont accidentally set the wrong task to done
 #def mark_entry_as_done(entry_id):
@@ -124,7 +124,10 @@ def test_2():
         dict_by_sub = {"subject": sub, "mails": mail_list}  # Create dict with key:sub and key:[list of all {entries} that have that subject]
         entry_list.append(dict_by_sub)  # Append created dict to the list
 
-    return render_template("test_2.html", list_of_entries=entry_list)
+    print(entry_list)
+    number_of_msg = len(list_of_entries)
+
+    return render_template("test_2.html", list_of_entries=entry_list, number_of_msg=number_of_msg)
 
 
 @app.route('/mark_as_done/<key>', methods=['GET', 'POST'])

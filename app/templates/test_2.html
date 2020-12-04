@@ -2,7 +2,8 @@
 {% block content %}
 
 
-
+<h3>There are {{ number_of_msg }} messages</h3>
+<br>
 {% for entry in list_of_entries %}
 <h3>{{ entry.subject }}</h3>
     {% for mail in entry.mails %}

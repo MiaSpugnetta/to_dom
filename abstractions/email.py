@@ -25,7 +25,7 @@ mailbox = MailBox(imap_server)
 
 
 # Function to create the email dictionary. Login into email account. If new relevant emails, add to dict_file. Copy email to folder1 and move email to folder2. Logout from account. Print # of new messages fetched, create dict to be returned from file. Return dict.
-def fetch_msgs_from_email():
+def fetch_new_msgs_from_email():
     # If False, fetches emails from inbox and creates dictionary. Else uses simulated, less complex one stored as variable useful for debug
     use_stale = False
     if use_stale:  # (is True):
@@ -53,10 +53,13 @@ def fetch_msgs_from_email():
                 if msg.from_ in email_list:  # If message from email addresses in the   email list
                     msg_dict[msg.uid] = {
                         'subject': msg.subject,
-                        'text': msg.text
+                        'text': msg.text,
+                        'date': msg.date_str
                     }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
 
-                    write_to_file('./msg_dict.json', msg)  # Add msg to the json dict file
+                    #write_to_file('./msg_dict.json', msg)  # Add msg to the json dict file
+
+                    write_to_file('./local_dict.json', msg)
 
                     mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
 
@@ -67,9 +70,33 @@ def fetch_msgs_from_email():
     # Print number of new email to the terminal
     print(f"There are {len(msg_dict)} new messages")
 
-    use_this_dict = load_from_file('./msg_dict.json')  # Loads the dict from json file
+    #use_this_dict = load_from_file('./msg_dict.json')  # Loads the dict from json file
 
-    return use_this_dict #msg_dict
+    #return use_this_dict #msg_dict
+
+    return msg_dict
+
+
+def fetch_all_relevant_emails():
+    msg_dict = {}
+    mailbox = MailBox(imap_server)
+    with mailbox.login(email, password, initial_folder='Already_read') as mailbox: #mailbox.folder.list('INBOX')
+        # mailbox.login(email, password, initial_folder='INBOX')  # or mailbox.folder.set instead 3d arg  # Access email account
+        for msg in mailbox.fetch(AND(all=True)):  # For message in inbox
+            #if msg.from_ in email_list:  # If message from email addresses in the   email list
+
+            msg_dict[msg.uid] = {
+                'subject': msg.subject,
+                'text': msg.text,
+                'date': msg.date_str
+            }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category) and body of the email.
+
+    print(f"There are {len(msg_dict)} relevant emails")
+
+    print(msg_dict)
+    return msg_dict
+
+
 
 
 

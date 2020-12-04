@@ -15,7 +15,7 @@ def write_to_file(path, msg):
     with open(path, 'r') as file:
         data = json.load(file)
 
-        data[msg.uid] = {'subject': msg.subject, 'text': msg.text}
+        data[msg.uid] = {'subject': msg.subject, 'text': msg.text, 'date': msg.date}
 
     with open(path, 'w') as file:
         json.dump(data, file, indent=4, sort_keys=True)
@@ -29,3 +29,8 @@ def load_from_file(path):
 
         return data
 
+
+# Function to overwrite json file
+def rewrite_new_file(path, dictionary):
+    with open(path, 'w') as file:
+        json.dump(dictionary, file, indent=4, sort_keys=True)

@@ -1,6 +1,6 @@
 from abstractions.configuration_path import get_config
 from deta import Deta
-import json
+#import json
 
 config = get_config('./config.json')  # Get sensitive data stored in separate file
 
@@ -17,6 +17,16 @@ def add_to_db(dict_of_msgs):
     for id, msg in dict_of_msgs.items():
         db.put(msg, key=str(id))
 
+
+# Function to add the messages to the database.
+#def add_to_db(dict_of_msgs):
+#    entries_in_db = get_db_entries()
+#
+#    for id, msg in dict_of_msgs.items():
+#        for entry in entries_in_db:
+#            if msg['text'] == entry['text']:
+#                db.delete()
+#        db.put(msg, key=str(id))
 
 ## Function to fetch the entries in the db.
 #def get_db_entries():
@@ -71,10 +81,17 @@ def mark_as_undone(key:str):
     db.update(updates, key)
 
 
+def remove_double_entries():
+    all_entries = list(db.fetch())[0]
+    #new_list = []
+    for entry in all_entries:
+        if 'done' not in entry:
+            #new_list.append(entry)
+            db.delete(entry['key'])
 
-#def move_entry(entry):
-#    entry['subject'] = 'Done'
-    #key = entry["key"]
-    #db.update(entry, key)
 
-#    return entry
+def remove_all_entries():
+    all_entries = list(db.fetch())[0]
+
+    for entry in all_entries:
+        db.delete(entry['key'])
