@@ -128,7 +128,7 @@ def test_2():
     return render_template("test_2.html", list_of_entries=entry_list, number_of_msg=number_of_msg)
 
 
-@app.route('/mark_as_done/<key>', methods=['GET', 'POST'])
+@app.route('/mark_as_done/<key>')#, methods=['GET', 'POST'])
 def mark_as_done(key):
 
     entry = get_entry(key)
@@ -137,7 +137,7 @@ def mark_as_done(key):
     update = {'done': True}
     update_entry(update, key)
 
-    return redirect(url_for('test_2'))
+    return f'entry {key} removed!'#redirect(app.config['SERVER_NAME']+ '/test_2')
 
 
 @app.route('/done', methods=['GET', 'POST'])
@@ -162,7 +162,7 @@ def done():
     return render_template("done.html", entry_list=entry_list, number_of_items=number_of_items)
 
 
-@app.route('/mark_undone/<key>', methods=['GET', 'POST'])
+@app.route('/done/<key>')#, methods=['GET', 'POST'])
 def mark_undone(key):
 
     entry = get_entry(key)
@@ -171,4 +171,5 @@ def mark_undone(key):
     update = {'done': False}
     update_entry(update, key)
 
-    return redirect(url_for('done'))
+    return f'entry {key} reinstated!'
+    #return redirect(url_for('done', _external=True))

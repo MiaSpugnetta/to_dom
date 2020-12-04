@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_config import Config
+from flask_config import Config, server_name
 
 # Create instance of a Flask class
 app = Flask(__name__)  # The `__name__` variable passed to the Flask class is a Python predefined variable.
@@ -12,6 +12,7 @@ app = Flask(__name__)  # The `__name__` variable passed to the Flask class is a 
 #app.config(secret_key)
 
 app.config.from_object(Config)  # Import SECRET_KEY from Config class in config file.
+#app.config['SERVER_NAME'] = server_name
 
 ######################################
 # Import routes module
