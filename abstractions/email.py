@@ -79,8 +79,8 @@ def fetch_all_relevant_emails():
 
             msg_dict[msg.uid] = {
                 'subject': msg.subject,
-                'text': msg.text,
-                'date': msg.date_str
+                'text': msg.text#,
+                #'date': msg.date_str
             }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category), body of the email and date.
 
     print(f"There are {len(msg_dict)} relevant emails")
