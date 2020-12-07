@@ -5,7 +5,7 @@ from collections import defaultdict
 from to_dom import get_dict_of_msg
 from .forms import ButtonInput
 
-#server_name = "https://yi0xmp.deta.dev"
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
