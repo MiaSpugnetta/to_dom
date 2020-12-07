@@ -9,7 +9,7 @@
     <h3>{{ entry.subject }}</h3>
 
     {% for mail in entry.mails %}
-        <p>{{ mail.key }}: {{ mail.text | urlize }}<span class="pull-right"><a class="text-danger" href="/mark_undone/{{mail.key}}">[done]</a></span></p>
+        <p>{{ mail.key }}: {{ mail.text | urlize }}<span class="pull-right"><a class="text-danger" href="/mark_undone/{{mail.key}}">[undo]</a></span></p>
 
 
     {% endfor %}

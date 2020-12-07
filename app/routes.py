@@ -5,7 +5,7 @@ from collections import defaultdict
 from to_dom import get_dict_of_msg
 from .forms import ButtonInput
 
-
+#server_name = "https://yi0xmp.deta.dev"
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -21,21 +21,6 @@ def index():
         return redirect('index')#f"""You are the favourite and your database has been updated, refresh the page!"""
 
     return render_template("index.html", all_entries=all_entries, form=button)
-
-
-# ToDO add 'done' button:
-#1. Frontend, mke sure to render button for each entry
-# 2. Button has to be connected to each entry
-# write post that marks entries as done
-# 3.1 add field to db: done =False
-#. in post set done = True
-#4. Make sure only tasks with done = False are shown in frontend
-# 4.1. either via frontned (hack) or
-#4.2. by only takind from the DB the entries that aren't done <_________________________________
-# 5. bonus: Display how many tasks are in done status
-#6. bonus: write unit tests for the above backend hndling stuff - importznt here to s you dont accidentally set the wrong task to done
-#def mark_entry_as_done(entry_id):
-#    in_db_mark_as_done(entry_id)
 
 
 @app.route('/test', methods=['GET', 'POST'])
@@ -137,7 +122,8 @@ def mark_as_done(key):
     update = {'done': True}
     update_entry(update, key)
 
-    return redirect(url_for('test_2'))
+    #return redirect(url_for('test_2'))
+    return redirect(f'{server_name}/test_2')
     #return redirect(f'{server_name}/test_2')#("https://yi0xmp.deta.dev/test_2", code=302)#f'Entry {key} removed!'#redirect(app.config['SERVER_NAME']+ '/test_2')
 
 
@@ -159,7 +145,7 @@ def done():
         dict_by_sub = {'subject':sub, 'mails':msg_list}
         entry_list.append(dict_by_sub)
 
-    return render_template("done.html", entry_list=entry_list, number_of_items=number_of_items)
+    return render_template("done.html", entry_list=entry_list, number_of_items=number_of_items, server_name=server_name)
 
 
 @app.route('/mark_undone/<key>', methods=['GET', 'POST'])
@@ -171,7 +157,8 @@ def mark_undone(key):
     update = {'done': False}
     update_entry(update, key)
 
-    return redirect(url_for('done'))
+    #return redirect(url_for('done'))  # This if running locally
+    return redirect(f'{server_name}/done')#, code=302)
 
     #return redirect(f'{server_name}/done')#("https://yi0xmp.deta.dev/done", code=302)#f'Entry {key} restored!'
     #return redirect(url_for('done', _external=True))
