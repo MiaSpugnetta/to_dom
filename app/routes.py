@@ -128,7 +128,7 @@ def test_2():
     return render_template("test_2.html", list_of_entries=entry_list, number_of_msg=number_of_msg)
 
 
-@app.route('/mark_as_done/<key>')#, methods=['GET', 'POST'])
+@app.route('/mark_as_done/<key>', methods=['GET', 'POST'])
 def mark_as_done(key):
 
     entry = get_entry(key)
@@ -137,7 +137,7 @@ def mark_as_done(key):
     update = {'done': True}
     update_entry(update, key)
 
-    return f'entry {key} removed!'#redirect(app.config['SERVER_NAME']+ '/test_2')
+    return redirect("https://yi0xmp.deta.dev/test_2", code=302)#f'Entry {key} removed!'#redirect(app.config['SERVER_NAME']+ '/test_2')
 
 
 @app.route('/done', methods=['GET', 'POST'])
@@ -158,11 +158,10 @@ def done():
         dict_by_sub = {'subject':sub, 'mails':msg_list}
         entry_list.append(dict_by_sub)
 
-
     return render_template("done.html", entry_list=entry_list, number_of_items=number_of_items)
 
 
-@app.route('/done/<key>')#, methods=['GET', 'POST'])
+@app.route('/done/<key>', methods=['GET', 'POST'])
 def mark_undone(key):
 
     entry = get_entry(key)
@@ -171,5 +170,5 @@ def mark_undone(key):
     update = {'done': False}
     update_entry(update, key)
 
-    return f'entry {key} reinstated!'
+    return redirect("https://yi0xmp.deta.dev/done", code=302)#f'Entry {key} restored!'
     #return redirect(url_for('done', _external=True))
