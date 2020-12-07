@@ -20,6 +20,7 @@ def add_to_db(dict_of_msgs):
 
 
 # Function to fetch entries from db. If parameter specified, filtered. If not, returns all entries.
+# TODO: fix, doesn't filter by done
 def get_db_entries(subject:str= '', done:bool=False):  # Default = False, returns all
 # TODO write unittest for this
 

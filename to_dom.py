@@ -22,13 +22,19 @@ def get_dict_of_msg():
     # Print number of entries in db to the terminal
     print(f'there are {len(entries_from_db)} entries in db')
 
+    number_undone_entries = 0
     # Create dictionary with all the entries
     for entry in entries_from_db:
-        dict_from_db[entry['key']] = {'subject': entry['subject'], 'text': entry['text'], 'date': entry['date']}
-
         if 'done' not in entry:  # Add 'done' field to db for new entries
             update = {'done': False}
             update_entry(update, entry['key'])
+
+        elif entry['done'] == False:  # Add entry to dict only if entry not marked as 'done'
+            dict_from_db[entry['key']] = {'subject': entry['subject'], 'text': entry['text'], 'date': entry['date']}
+            number_undone_entries += 1
+
+    # Print number of entries that will be sent in the report
+    print(f'there are {number_undone_entries} entries in db')
 
     return dict_from_db
 
