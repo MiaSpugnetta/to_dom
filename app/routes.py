@@ -1,4 +1,4 @@
-from app import app
+from app import app, server_name
 from flask import redirect, render_template, url_for
 from abstractions.database import get_db_entries, get_entry, update_entry
 from collections import defaultdict
@@ -137,7 +137,8 @@ def mark_as_done(key):
     update = {'done': True}
     update_entry(update, key)
 
-    return redirect("https://yi0xmp.deta.dev/test_2", code=302)#f'Entry {key} removed!'#redirect(app.config['SERVER_NAME']+ '/test_2')
+    return redirect(url_for('test_2'))
+    #return redirect(f'{server_name}/test_2')#("https://yi0xmp.deta.dev/test_2", code=302)#f'Entry {key} removed!'#redirect(app.config['SERVER_NAME']+ '/test_2')
 
 
 @app.route('/done', methods=['GET', 'POST'])
@@ -161,7 +162,7 @@ def done():
     return render_template("done.html", entry_list=entry_list, number_of_items=number_of_items)
 
 
-@app.route('/done/<key>', methods=['GET', 'POST'])
+@app.route('/mark_undone/<key>', methods=['GET', 'POST'])
 def mark_undone(key):
 
     entry = get_entry(key)
@@ -170,5 +171,7 @@ def mark_undone(key):
     update = {'done': False}
     update_entry(update, key)
 
-    return redirect("https://yi0xmp.deta.dev/done", code=302)#f'Entry {key} restored!'
+    return redirect(url_for('done'))
+
+    #return redirect(f'{server_name}/done')#("https://yi0xmp.deta.dev/done", code=302)#f'Entry {key} restored!'
     #return redirect(url_for('done', _external=True))

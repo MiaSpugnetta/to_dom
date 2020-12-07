@@ -11,10 +11,10 @@
         {% for mail in entry.mails %}
 
             {% if mail.done == False %}
-            <p>{{ mail.key }}: {{ mail.text | urlize }}</p>
+            <p>{{ mail.key }}: {{ mail.text | urlize }}<span class="pull-right"><a class="text-danger" href="/mark_as_done/{{mail.key}}">[done]</a></span></p>
 {#{ url_for('mark_as_done', key=mail.key, _external=True) }#}
             {#<!--span class="pull-right"><a class="text-danger" href="{{ url_for('mark_as_done', key=mail.key, _external=True) }}">[done]</a></span-->#}
-            <span class="pull-right"><a class="text-danger" href="/mark_as_done/{{mail.key}}">[done]</a></span>
+            {# <span class="pull-right"><a class="text-danger" href="/mark_as_done/{{mail.key}}">[done]</a></span> #}
 
             {% endif %}
 
