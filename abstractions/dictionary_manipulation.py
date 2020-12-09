@@ -1,13 +1,13 @@
 from collections import defaultdict
 
 
+# Necessary to upload to the database
 # Function to capitalise subject values in the original dictionary {id: {'subject':subject, 'text':text}, ...}
-# Necessary to sent to the database
 def capitalise_dict_values(dict_of_msgs):
     final_dict = dict_of_msgs.copy()  # Create copy of original dictionary
 
-    for id,msg in final_dict.items():  # For key, value (where key=id and vale={msg}) in dictionary of messages:
-        for k,field in msg.items():  # For key, value (where key='subject', 'text and values are the subject and text of the msg) in msg subdictionary:
+    for id,msg in final_dict.items():  # For key, value (where key='id' and value={msg}) in dictionary of messages:
+        for k,field in msg.items():  # For key, value (where key='subject', 'text', 'date' and values are the subject, date and text of the msg) in msg subdictionary:
             if k in ['subject']:  # If key == the str 'subject' (or if the k is contained (is equal to on of the entries) in the list that contains the str 'subject':
                 msg[k] = msg[k].capitalize()  # Capitalise the value of the key 'subject'.
             # (Can also be represented as:
@@ -20,8 +20,9 @@ def capitalise_dict_values(dict_of_msgs):
     return final_dict
 
 
-# Function to parse the dictionary.
+######################################################################
 # Necessary to send the email
+# Function to parse the dictionary.
 def parse_dict(msg_dict):
     assert type(msg_dict) == dict, f"dummy you're using a {type(msg_dict)}"  # Make sure that the dictionary containing the emails is indeed a dictionary.
 
@@ -29,7 +30,7 @@ def parse_dict(msg_dict):
 
     for id in msg_dict:  # For message in the dictionary:
         append_dict = {  # Create dictionary that contains
-                    'id': id,  # Number that identify the email, it is NOT in order by date # (id=1 for first email, increases regularly, by one - duh). Basically an index.
+                    'id': id,  # Number that identify the email, it is NOT in order by date
                     'text': msg_dict[id]['text']#,  # Object+body of the email at said index (id).
                     #'date': msg_dict[id]['date']
         }

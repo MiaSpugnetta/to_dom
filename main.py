@@ -1,8 +1,6 @@
-# File necessary for Deta deployment, exp_app.py copy
+# File necessary for Deta deployment
 # Import all the application instance
 from app import app
-
-app.config["DEBUG"] = True #'https://yi0xmp.deta.dev/'
 
 
 # Fully working, basic web app structured as following:

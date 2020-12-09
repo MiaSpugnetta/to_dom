@@ -7,5 +7,3 @@ update = {'done': False}
 for entry in all_db_entries:
     key = entry['key']
     update_entry(update, key)
-
-#update_entry()

@@ -10,7 +10,7 @@ def get_config(path):
     return config
 
 
-# Function to write to json file
+# Function to write to json dictionary file
 def write_to_file(path, msg):
     with open(path, 'r') as file:
         data = json.load(file)
@@ -31,6 +31,6 @@ def load_from_file(path):
 
 
 # Function to overwrite json file
-def rewrite_new_file(path, dictionary):
+def overwrite_file(path, dictionary):
     with open(path, 'w') as file:
         json.dump(dictionary, file, indent=4, sort_keys=True)

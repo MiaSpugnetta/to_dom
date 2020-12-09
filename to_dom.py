@@ -2,7 +2,6 @@
 from abstractions.dictionary_manipulation import capitalise_dict_values, parse_dict, generate_text_message
 from abstractions.database import add_to_db, get_db_entries, update_entry
 from abstractions.email import fetch_new_msgs_from_email, compose_msg, send_email
-#from abstractions.configuration_path import load_from_file
 
 
 # Function to create the dictionary of messages. Fetches new emails. Capitalises subjects. Adds messages to db. Returns a dict.
@@ -25,11 +24,13 @@ def get_dict_of_msg():
     number_undone_entries = 0
     # Create dictionary with all the entries
     for entry in entries_from_db:
-        if 'done' not in entry:  # Add 'done' field to db for new entries
+        # Add 'done' field to db for new entries
+        if 'done' not in entry:
             update = {'done': False}
             update_entry(update, entry['key'])
 
-        elif entry['done'] == False:  # Add entry to dict only if entry not marked as 'done'
+        # Add entry to dict only if entry not marked as 'done'
+        elif entry['done'] == False:
             dict_from_db[entry['key']] = {'subject': entry['subject'], 'text': entry['text'], 'date': entry['date']}
             number_undone_entries += 1
 
@@ -43,7 +44,7 @@ def get_dict_of_msg():
 def create_and_send_email():
     msg_dict = get_dict_of_msg()  # Create msg_dict from db entries
 
-    parsed_dict = parse_dict(msg_dict)  # Create parsed dictionary
+    parsed_dict = parse_dict(msg_dict)  # Create parsed dictionary (grouped by subject)
 
     text_email = generate_text_message(parsed_dict)  # Create text that goes in the body of the email
 
