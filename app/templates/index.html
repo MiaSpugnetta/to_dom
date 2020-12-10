@@ -1,34 +1,22 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>To_dom</title>
-    <style>
+{% extends "base.html" %}
+{% block content %}
 
-    body {
-      text-align: center;
-    }
-    </style>
+<h3>There are {{ number_of_msg }} messages</h3>
+<br>
 
-  </head>
+{% for entry in list_of_entries %}
+    <h3>{{ entry.subject }}</h3>
 
-  <body>
+    {% for mail in entry.mails %}
 
-     <form method="post">
-      {{ form.csrf_token }}
-      {{ form.refresh_button() }}
-     </form>
+        {% if mail.done == False %}
+        <p>{{ mail.key }}: {{ mail.text | urlize }}<span class="pull-right"><a class="text-danger" href="/mark_as_done/{{mail.key}}">[done]</a></span></p>
 
-
-    {# {{ all_entries }} #}
-    {% for entry in all_entries %}
-      {% for dict in entry %}
-
-        <p>{{ dict }}</p>
-
-      {% endfor %}
-     {# {{ entry }} #}
+        {% endif %}
 
     {% endfor %}
+    <p>________________________________</p>
 
-  </body>
-</html>
+{% endfor %}
+
+{% endblock %}

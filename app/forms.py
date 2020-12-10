@@ -5,3 +5,4 @@ from wtforms import SubmitField
 
 class ButtonInput(FlaskForm):
     refresh_button = SubmitField('Refresh from database')
+    done_button = SubmitField('Mark as done')

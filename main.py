@@ -1,4 +1,4 @@
-# File necessary for Deta deployment, exp_app.py copy
+# File necessary for Deta deployment
 # Import all the application instance
 from app import app
 
@@ -11,3 +11,4 @@ from app import app
 #       __init__.py
 #       routes.py
 #    exp_app.py (main.py)
+

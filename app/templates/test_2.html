@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+
+    form {
+      text-align: center;
+    }
+  </style>
+
+     <form method="post">
+      {{ form.csrf_token }}
+      {{ form.refresh_button() }}
+     </form>
+
+
+    {% for entry in all_entries %}
+        <p>{{ entry }}</p>
+
+    {% endfor %}
+
+{% endblock %}

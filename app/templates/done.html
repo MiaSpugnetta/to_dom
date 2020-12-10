@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<h3>Tasks done: {{ number_of_items }}</h3>
+<br>
+
+{% for entry in entry_list %}
+    <h3>{{ entry.subject }}</h3>
+
+    {% for mail in entry.mails %}
+        <p>{{ mail.key }}: {{ mail.text | urlize }}<span class="pull-right"><a class="text-danger" href="/mark_undone/{{mail.key}}">[undo]</a></span></p>
+
+
+    {% endfor %}
+
+    <p>________________________________</p>
+
+{% endfor %}
+
+{% endblock %}
