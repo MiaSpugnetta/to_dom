@@ -1,21 +1,22 @@
 {% extends "base.html" %}
+{% block content %}
 
-  {% block content %}
-  <style>
+<h3>There are {{ number_of_msg }} messages</h3>
+<br>
 
-    form {
-      text-align: center;
-    }
-  </style>
-     <form method="post">
-      {{ form.csrf_token }}
-      {{ form.refresh_button() }}
-     </form>
+{% for entry in list_of_entries %}
+    <h3>{{ entry.subject }}</h3>
 
+    {% for mail in entry.mails %}
 
-    {# {{ all_entries }} #}
-    {% for entry in all_entries %}
-        <p>{{ entry }}</p>
+        {% if mail.done == False %}
+        <p>{{ mail.key }}: {{ mail.text | urlize }}<span class="pull-right"><a class="text-danger" href="/mark_as_done/{{mail.key}}">[done]</a></span></p>
+
+        {% endif %}
+
     {% endfor %}
+    <p>________________________________</p>
 
-  {% endblock %}
+{% endfor %}
+
+{% endblock %}
