@@ -19,7 +19,7 @@ def get_dict_of_msg():
     entries_from_db = get_db_entries()  # List that contains all the db entries
 
     # Print number of entries in db to the terminal
-    print(f'there are {len(entries_from_db)} entries in db')
+    print(f'there is a total of {len(entries_from_db)} entries in db')
 
     number_undone_entries = 0
     # Create dictionary with all the entries
@@ -35,7 +35,7 @@ def get_dict_of_msg():
             number_undone_entries += 1
 
     # Print number of entries that will be sent in the report
-    print(f'there are {number_undone_entries} entries in db')
+    print(f'there are {number_undone_entries} relevant entries in db')
 
     return dict_from_db
 
