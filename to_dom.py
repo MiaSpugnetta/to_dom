@@ -22,6 +22,7 @@ def get_dict_of_msg():
     print(f'there is a total of {len(entries_from_db)} entries in db')
 
     number_undone_entries = 0
+
     # Create dictionary with all the entries
     for entry in entries_from_db:
         # Add 'done' field to db for new entries
@@ -53,9 +54,7 @@ def create_and_send_email():
     send_email(message)  # Send composed email
 
 
-# Set to True before running the script and email will be composed and sent
-# Set to False before running the flask app
-# If True, them email is composed and sent. Run external file (todom_active.py).
+# Run external file (todom_active.py) where function is called so not to have to modify this file.
 def send_report(send_report=False):
     if send_report:
         create_and_send_email()  # Create email to be sent and send it

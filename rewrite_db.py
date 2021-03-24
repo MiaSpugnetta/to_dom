@@ -27,5 +27,3 @@ remove_all_entries()
 
 # Restore the database
 add_to_db(dict_of_msgs)
-
-

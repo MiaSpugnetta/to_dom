@@ -10,5 +10,4 @@ from app import app
 #    app\
 #       __init__.py
 #       routes.py
-#    exp_app.py (main.py)
-
+#       main.py
