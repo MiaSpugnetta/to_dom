@@ -16,11 +16,10 @@ def get_dict_of_msg():
     ###############################
     # This is to create the dict from db entries
     dict_from_db = {}
-    # TODO: check if the problem is here
     entries_from_db = get_db_entries()  # List that contains all the db entries
 
     # Print number of entries in db to the terminal
-    ## II PRINT STATEMENT
+    # II PRINT STATEMENT
     print(f'there is a total of {len(entries_from_db)} entries in db')
 
     number_undone_entries = 0
@@ -39,8 +38,7 @@ def get_dict_of_msg():
             number_undone_entries += 1
 
     # Print number of entries that will be sent in the report
-    ## III PRINT STATEMENT
-    # TODO: check this: count does not include new messages. given the logic above, it looks like 'done' is not added to the new entry right away, as it should
+    # III PRINT STATEMENT
     print(f'there are {number_undone_entries} relevant entries in db')
 
     return dict_from_db
