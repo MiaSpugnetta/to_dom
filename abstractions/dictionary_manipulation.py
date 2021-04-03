@@ -1,4 +1,9 @@
 from collections import defaultdict
+from abstractions.external_files import get_config
+
+
+config = get_config('./config.json')  # Get sensitive data stored in separate file
+app_url = config['app_url']
 
 
 # Necessary to upload to the database
@@ -20,7 +25,7 @@ def capitalise_dict_values(dict_of_msgs):
     return final_dict
 
 
-######################################################################
+###############################################################
 # Necessary to send the email
 # Function to parse the dictionary.
 def parse_dict(msg_dict):
@@ -68,4 +73,6 @@ def generate_text_message(parsed_dict):
 
         return_string += '_________________________\n\n\n'  # Add a separator after each category.
 
-    return return_string  # Return composed message (text that goes in the body of the email)
+    final_string = "APP URL: " + app_url + " " + "\n\n" + return_string
+
+    return final_string  # Return composed message (text that goes in the body of the email)

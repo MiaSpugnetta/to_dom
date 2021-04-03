@@ -3,7 +3,6 @@ from imap_tools import MailBox, AND
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import os
 
 
 config = get_config('./config.json')  # Get sensitive data stored in separate file
@@ -46,7 +45,6 @@ def fetch_new_msgs_from_email():
         msg_dict = {}
         mailbox = MailBox(imap_server)  # Create mailbox object
         with mailbox.login(email, password, initial_folder='INBOX') as mailbox:  # Access email account
-            # TODO: fix: it seems to be fetching only one new message even if multiple
             for msg in mailbox.fetch(AND(all=True)):  # For message in inbox
                 if msg.from_ in email_list:  # If message from email addresses in the email list
                     msg_dict[msg.uid] = {
@@ -56,18 +54,9 @@ def fetch_new_msgs_from_email():
                     }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category), date and body of the email.
 
                     ###############################################
-                    # TODO: test this with no existing json file!
-                    # TODO: move to dict_manipulation
-                    ## Useful for debugging, not relevant for to_dom
-                    #if os.path.isfile('./local_dict.json'):
-                    #    write_to_file('./local_dict.json', msg)  # Add msg to the json dict file
-                    #else:
-                    #    with open('./local_dict.json', 'w') as file:
-                    #        json.dump('./local_dict.json', file)
-
-
+                    # Useful for debugging, not relevant for to_dom
                     write_to_file('./local_dict.json', msg)
-                    #print("where is my local dict?")
+
                     ###############################################
 
                     mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
