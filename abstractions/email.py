@@ -3,6 +3,7 @@ from imap_tools import MailBox, AND
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
 
 
 config = get_config('./config.json')  # Get sensitive data stored in separate file
@@ -53,19 +54,30 @@ def fetch_new_msgs_from_email():
                         'date': msg.date_str
                     }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category), date and body of the email.
 
-                    write_to_file('./local_dict.json', msg)  # Add msg to the json dict file
+                    ###############################################
+                    # TODO: test this with no existing json file!
+                    # TODO: move to dict_manipulation
+                    ## Useful for debugging, not relevant for to_dom
+                    #if os.path.isfile('./local_dict.json'):
+                    #    write_to_file('./local_dict.json', msg)  # Add msg to the json dict file
+                    #else:
+                    #    with open('./local_dict.json', 'w') as file:
+                    #        json.dump('./local_dict.json', file)
+                    ###############################################
 
                     mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
 
                     mailbox.move(msg.uid, 'Already_read')  # Move message from inbox to "Already_read" folder
 
     # Print number of new email to the terminal
+    ## I PRINT STATEMENT
     print(f"There are {len(msg_dict)} new messages")
 
     return msg_dict
 
 
 # Function to create an email dictionary with all the relevant emails.
+# TODO: check! it appears to be used only when rewriting db
 def fetch_all_relevant_emails():
     msg_dict = {}
     mailbox = MailBox(imap_server)  # Create mailbox object
@@ -77,7 +89,9 @@ def fetch_all_relevant_emails():
                 'date': msg.date_str
             }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category), body of the email and date.
 
-    print(f"There are {len(msg_dict)} relevant emails")
+    # is it this func even used!?
+    print("$$$$$$$$$$$$$$$$$$$$")
+    #print(f"There are {len(msg_dict)} relevant emails")
 
     return msg_dict
 
