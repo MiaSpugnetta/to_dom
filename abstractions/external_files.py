@@ -1,4 +1,5 @@
 import json
+import os
 
 
 # Function to get the config values from the Config file.
@@ -12,10 +13,25 @@ def get_config(path):
 
 # Function to write to json dictionary file
 def write_to_file(path, msg):
-    with open(path, 'r') as file:
-        data = json.load(file)
+    #with open(path, 'r') as file:
+    #    data = json.load(file)
+#
+    #    data[msg.uid] = {'subject': msg.subject, 'text': msg.text, 'date': msg.date_str}
+#
+    #with open(path, 'w') as file:
+    #    json.dump(data, file, indent=4, sort_keys=True)
 
-        data[msg.uid] = {'subject': msg.subject, 'text': msg.text, 'date': msg.date_str}
+    # TODO: would be useful to make create file if not there already
+    if os.path.isfile(path):
+        with open(path, 'r') as file:
+            data = json.load(file)
+    else:
+        data = {}
+        #with open(path, 'w') as outfile:
+        #    json.dump(data, outfile)
+
+
+    data[msg.uid] = {'subject': msg.subject, 'text': msg.text, 'date': msg.date_str}
 
     with open(path, 'w') as file:
         json.dump(data, file, indent=4, sort_keys=True)

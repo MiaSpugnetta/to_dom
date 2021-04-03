@@ -46,6 +46,7 @@ def fetch_new_msgs_from_email():
         msg_dict = {}
         mailbox = MailBox(imap_server)  # Create mailbox object
         with mailbox.login(email, password, initial_folder='INBOX') as mailbox:  # Access email account
+            # TODO: fix: it seems to be fetching only one new message even if multiple
             for msg in mailbox.fetch(AND(all=True)):  # For message in inbox
                 if msg.from_ in email_list:  # If message from email addresses in the email list
                     msg_dict[msg.uid] = {
@@ -63,6 +64,10 @@ def fetch_new_msgs_from_email():
                     #else:
                     #    with open('./local_dict.json', 'w') as file:
                     #        json.dump('./local_dict.json', file)
+
+
+                    write_to_file('./local_dict.json', msg)
+                    #print("where is my local dict?")
                     ###############################################
 
                     mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
