@@ -16,6 +16,7 @@ def get_dict_of_msg():
     ###############################
     # This is to create the dict from db entries
     dict_from_db = {}
+    # TODO: check if the problem is here
     entries_from_db = get_db_entries()  # List that contains all the db entries
 
     # Print number of entries in db to the terminal
@@ -30,15 +31,16 @@ def get_dict_of_msg():
         if 'done' not in entry:
             update = {'done': False}
             update_entry(update, entry['key'])
+            number_undone_entries += 1
 
         # Add entry to dict only if entry not marked as 'done'
-        elif entry['done'] == False:
+        elif not entry['done']:
             dict_from_db[entry['key']] = {'subject': entry['subject'], 'text': entry['text'], 'date': entry['date']}
             number_undone_entries += 1
 
     # Print number of entries that will be sent in the report
     ## III PRINT STATEMENT
-    # TODO: check this: count does not include new messages
+    # TODO: check this: count does not include new messages. given the logic above, it looks like 'done' is not added to the new entry right away, as it should
     print(f'there are {number_undone_entries} relevant entries in db')
 
     return dict_from_db
