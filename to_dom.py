@@ -19,6 +19,7 @@ def get_dict_of_msg():
     entries_from_db = get_db_entries()  # List that contains all the db entries
 
     # Print number of entries in db to the terminal
+    # II PRINT STATEMENT
     print(f'there is a total of {len(entries_from_db)} entries in db')
 
     number_undone_entries = 0
@@ -29,13 +30,15 @@ def get_dict_of_msg():
         if 'done' not in entry:
             update = {'done': False}
             update_entry(update, entry['key'])
+            number_undone_entries += 1
 
         # Add entry to dict only if entry not marked as 'done'
-        elif entry['done'] == False:
+        elif not entry['done']:
             dict_from_db[entry['key']] = {'subject': entry['subject'], 'text': entry['text'], 'date': entry['date']}
             number_undone_entries += 1
 
     # Print number of entries that will be sent in the report
+    # III PRINT STATEMENT
     print(f'there are {number_undone_entries} relevant entries in db')
 
     return dict_from_db

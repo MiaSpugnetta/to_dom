@@ -53,19 +53,25 @@ def fetch_new_msgs_from_email():
                         'date': msg.date_str
                     }  # Dictionary of dictionaries, key is id (identifiers number of the email) and value is a dictionary itself (in this items are subject (category), date and body of the email.
 
-                    write_to_file('./local_dict.json', msg)  # Add msg to the json dict file
+                    ###############################################
+                    # Useful for debugging, not relevant for to_dom
+                    write_to_file('./local_dict.json', msg)
+
+                    ###############################################
 
                     mailbox.copy(msg.uid, 'Read_these')  # Copy message from current folder (inbox) to "Read_these" folder
 
                     mailbox.move(msg.uid, 'Already_read')  # Move message from inbox to "Already_read" folder
 
     # Print number of new email to the terminal
+    # I PRINT STATEMENT
     print(f"There are {len(msg_dict)} new messages")
 
     return msg_dict
 
 
 # Function to create an email dictionary with all the relevant emails.
+# Only relevant if db needs updating, not used in to_dom
 def fetch_all_relevant_emails():
     msg_dict = {}
     mailbox = MailBox(imap_server)  # Create mailbox object
