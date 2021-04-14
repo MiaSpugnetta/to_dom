@@ -1,5 +1,5 @@
 # Access email account, fetch messages, uploading to database, creating email report and send it
-from abstractions.dictionary_manipulation import capitalise_dict_values, parse_dict, generate_text_message
+from abstractions.message_manipulation import capitalise_dict_values, parse_dict, generate_text_message #, remove_stuff_from_body
 from abstractions.database import add_to_db, get_db_entries, update_entry
 from abstractions.email import fetch_new_msgs_from_email, compose_msg, send_email
 
@@ -10,6 +10,7 @@ def get_dict_of_msg():
     msg_dict_new = fetch_new_msgs_from_email()  # Create dict with new emails
 
     dict_of_msgs = capitalise_dict_values(msg_dict_new)  # Capitalise the first letter of the subject of the email
+    #remove_stuff_from_body(msg_dict_new)
 
     add_to_db(dict_of_msgs)  # Add the messages to the db
 

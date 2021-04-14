@@ -24,6 +24,16 @@ def capitalise_dict_values(dict_of_msgs):
 
     return final_dict
 
+#def remove_stuff_from_body(dict_of_mess):
+#    dict_to_rtn = dict_of_mess.copy()
+#
+#    for id,msg in dict_to_rtn.items():
+#        for subject,body in msg.items():
+#            if body[0] is int:
+#                print("you're close!")
+
+
+
 
 ###############################################################
 # Necessary to send the email

@@ -1,7 +1,7 @@
 # Rewrite all entries in db with the actual emails because I'm an idiot and messed up the keys numbers
 from abstractions.database import remove_all_entries, add_to_db
 from abstractions.email import fetch_all_relevant_emails
-from abstractions.dictionary_manipulation import capitalise_dict_values
+from abstractions.message_manipulation import capitalise_dict_values
 from abstractions.external_files import overwrite_file
 
 
