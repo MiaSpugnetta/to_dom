@@ -52,14 +52,14 @@ def fetch_new_msgs_from_email():
                         'subject': msg.subject,
                         'text': msg.text,
                         'date': msg.date_str,
-                        'user': "T"
+                        'user': 'T'
                     }
                 elif msg.from_ in email_list[1]:
                     msg_dict[msg.uid] = {
                         'subject': msg.subject,
                         'text': msg.text,
                         'date': msg.date_str,
-                        'user': "M"
+                        'user': 'M'
                     }
                 elif msg.from_ in email_list:  # If message from email addresses in the email list
                     msg_dict[msg.uid] = {
