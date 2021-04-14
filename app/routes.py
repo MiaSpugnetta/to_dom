@@ -9,7 +9,6 @@ from .forms import ButtonInput
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    # TODO: get_db_entries doesn't work properly
     list_of_entries = get_db_entries()  # Return a list of all the entries in db as dictionaries in the form of [{subject:<sub>, key:<key>, text:<text>}, {}, ... ].
 
     msg_dict = defaultdict(list)

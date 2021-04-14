@@ -20,33 +20,15 @@ def add_to_db(dict_of_msgs):
 
 
 # Function to fetch entries from db. If parameter specified, filtered. If not, returns all entries.
-# TODO: fix, doesn't filter by done
-#def get_db_entries(subject:str= '', done:bool=False):  # Default = False, returns all
-#
-#    if subject:
-#        entries_of_subject = list(db.fetch({"subject":subject, 'done':done}))[0]
-#
-#    elif done:
-#        entries_of_subject = list(db.fetch({'done':done}))[0]
-#
-#    else:
-#        entries_of_subject = list(db.fetch({}))[0]
-#
-#    return entries_of_subject
-
-def get_db_entries(discriminant=None):#done:bool=False):
-
+def get_db_entries(discriminant=None):  # Default = returns all
     if type(discriminant) is bool:
         entries = list(db.fetch({"done":discriminant}))[0]
 
     elif type(discriminant) is str:
         entries = list(db.fetch({"subject":discriminant}))[0]
 
-    #elif discriminant is None:
-    #    entries = list(db.fetch({}))[0]
     else:
         entries = list(db.fetch({}))[0]
-        print("Not a valid discriminant! All entries in db returned")
 
     return entries
 
