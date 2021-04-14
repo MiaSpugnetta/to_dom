@@ -60,7 +60,7 @@ def mark_as_done(key):  # Key to insure that it's the right entry
 
 @app.route('/done', methods=['GET', 'POST'])
 def done():
-    list_of_entries = get_db_entries(done=True)  # Fetch from db only the entries marked as 'done'
+    list_of_entries = get_db_entries(True)  # Fetch from db only the entries marked as 'done'
     number_of_items = (len(list_of_entries))  # Count the number of entries marked as 'done'
 
     msg_dict = defaultdict(list)
