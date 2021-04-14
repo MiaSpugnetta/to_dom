@@ -56,20 +56,54 @@ def parse_dict_scores(dict_scores):
     return_dict = defaultdict(list) #{}
 
     for user in dict_scores:
-        append_dict = {
-                         user: dict_scores[user]['score']
-        }
+        #append_dict = {
+        #                'user': user,
+        #                'score': dict_scores[user]['score']
+        #}
+
+        append_dict = {user: dict_scores[user]['score']}
 
         return_dict[dict_scores[user]['date']].append(append_dict)
     return return_dict
 
 
 parsed_scores = parse_dict_scores(scores)
-print(parsed_scores)
+#print(parsed_scores)
+#print(pd.DataFrame.from_records(parsed_scores))
+
+print(f"this is the parsed_dict_scores: {parsed_scores}")
+
+dates = []
+frames = []
+
+for date, listuserscore in parsed_scores.items():
+    dates.append(date)
+    print(dates)
+    for userscore in listuserscore:
+        print(userscore)
+        print(type(userscore))
+        mini_df = pd.DataFrame(userscore, index=[0])
+        print(mini_df)
+        frames.append(mini_df)
+        print(frames)
+
+        #frames.append(pd.DataFrame(userscore, index=[0]))#, index=userscore))#, index=userscore.keys()))
+
+        #frames.append(pd.DataFrame(userscore))#, index=userscore))#, orient='index'))
 
 
-parsed_score_df = pd.DataFrame.from_dict(parse_dict_scores(scores))
-print(parsed_score_df)
+dataf = pd.concat(frames, keys=dates)
+
+print("*************************************")
+print(dataf)
+
+
+#parsed_score_df = pd.DataFrame.from_dict({(i,j): parsed_scores[i][j] for i in parsed_scores.keys() for j in parsed_scores[i].keys()}, orien='index')
+
+
+#parsed_score_df = pd.DataFrame.from_dict(parse_dict_scores(scores))
+
+#print(parsed_score_df)
 
 # Plot DataFrame
 #plt.plot(score_df)
