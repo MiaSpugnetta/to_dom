@@ -46,22 +46,7 @@ def fetch_new_msgs_from_email():
         mailbox = MailBox(imap_server)  # Create mailbox object
         with mailbox.login(email, password, initial_folder='INBOX') as mailbox:  # Access email account
             for msg in mailbox.fetch(AND(all=True)):  # For message in inbox
-                # TODO: adding different users
-                if msg.from_ in email_list[0]:
-                    msg_dict[msg.uid] = {
-                        'subject': msg.subject,
-                        'text': msg.text,
-                        'date': msg.date_str,
-                        'user': "T"
-                    }
-                elif msg.from_ in email_list[1]:
-                    msg_dict[msg.uid] = {
-                        'subject': msg.subject,
-                        'text': msg.text,
-                        'date': msg.date_str,
-                        'user': "M"
-                    }
-                elif msg.from_ in email_list:  # If message from email addresses in the email list
+                if msg.from_ in email_list:  # If message from email addresses in the email list
                     msg_dict[msg.uid] = {
                         'subject': msg.subject,
                         'text': msg.text,
