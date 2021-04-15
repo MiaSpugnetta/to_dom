@@ -86,6 +86,7 @@ def get_scores(entries):
     #                              ]
     # })
 
+    #print(pd.DataFrame.from_records(scores_dict))
 
 
 
@@ -99,11 +100,23 @@ change_date_format(entries)
 
 scores = get_scores(entries)
 print(scores)
+print("FUCK")
 print(len(scores))
+scores = dict(scores)
+print(type(scores))
 #print(scores.keys())
 print("&&&&&&&&&&&&&")
 #print(type(scores['T']['date']))
 #print((scores['T']['date']))
+
+
+#continue here
+
+# Plot the stuff here
+# TODO: make simple plot of the scores
+for key,value in scores.items():
+    for item in value:
+        print(item)
 
 
 
