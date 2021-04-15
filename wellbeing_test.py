@@ -41,38 +41,56 @@ def get_scores(entries):
 
     li_wellbeing_entries = sorted(li_wellbeing_entries, key=operator.itemgetter("date", "user"))  # sort the list that already exists by date and then by user
 
-    ################################################################
+    #################################################
 
     # take the score of every entry, make it a float and create dict with the float(score), date and user
-    scores_dict = {}
-    li_scores = []
+    scores_dict = defaultdict(list)
 
     for entrydict in li_wellbeing_entries:
-        floatdict = {}
-        li_dict = []
 
         entry_text = entrydict['text'].split(" ")
         #print(entry_text)  #['9.5\r\n\r\n--', '\r\nThomas', 'Rost\r\n']
 
         score = entry_text[0].split("\r")
         score = float(score[0])
-        #print(score)
+
         # good till here
 
+        #li_scores.append(entrydict['date'])
+        #append_dict = {entrydict['user']: score}
+        #li_scores.append(append_dict)
 
 
+        append_dict = {entrydict['user']:[score]}
 
+        scores_dict[entrydict['date']].append(append_dict)
 
+        #print(append_dict)
+        #print("__________________________")
+        #print(scores_dict)
 
+        #scores[entrydict['date']] = {'user': entrydict['user'], 'score': score}
 
+        #scores[entrydict['date']] = [{entrydict['user']: score}]
+
+    print(scores_dict)  # defaultdict(<class 'list'>{
+    # datetime.date(2021, 4, 14): [
+    #                               {'M': [8.0]},
+    #                               {'M': [8.0]},
+    #                               {'T': [9.5]}
+    #                             ],
+    # datetime.date(2021, 4, 15): [
+    #                               {'M': [7.5]},
+    #                               {'M': [4.5]},
+    #                               {'T': [6.5]}
+    #                              ]
+    # })
 
 
 
 
     print("end of get_score()")
-
-
-
+    return scores_dict
     #return tmp
 
 
@@ -86,6 +104,10 @@ print(len(scores))
 print("&&&&&&&&&&&&&")
 #print(type(scores['T']['date']))
 #print((scores['T']['date']))
+
+
+
+
 
 
 # Create pandas DataFrame
