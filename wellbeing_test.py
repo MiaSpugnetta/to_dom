@@ -17,7 +17,7 @@ def change_date_format(entries):
             #print("*******")
     return entries
 
-    #return updated_entries
+#########################################################################
 
 # TODO: it returns a dict of form {'T': {'date': datetime.date(2021, 4, 15), 'score': 6.5}, 'M': {'date': datetime.date(2021, 4, 15), 'score': 4.5}}, it rewrites the score every time. FIX
 def get_scores(entries):
@@ -38,98 +38,42 @@ def get_scores(entries):
     # {'date': datetime.date(2021, 4, 15), 'done': False, 'key': '658', 'subject': 'Wellbeing', 'text': '7.5\r\n', 'user': 'M'},
     # {'date': datetime.date(2021, 4, 15), 'done': False, 'key': '659', 'subject': 'Wellbeing', 'text': '4.5\r\n', 'user': 'M'}]
 
-#####################################################################3
-    # sort by date:
-    #tmp = []
-    #   for i, g in itertools.groupby(li_wellbeing_entries,     key=operator.itemgetter("date")):
-    #    tmp.append(list(g))
-
 
     li_wellbeing_entries = sorted(li_wellbeing_entries, key=operator.itemgetter("date", "user"))  # sort the list that already exists by date and then by user
 
-
-    print(li_wellbeing_entries)  # [
-    # {'date': datetime.date(2021, 4, 14), 'done': False, 'key': '654', 'subject': 'Wellbeing', 'text': '8\r\n', 'user': 'M'},
-    # {'date': datetime.date(2021, 4, 14), 'done': False, 'key': '656', 'subject': 'Wellbeing', 'text': '8\r\n', 'user': 'M'},
-    # {'date': datetime.date(2021, 4, 14), 'done': False, 'key': '648', 'subject': 'Wellbeing', 'text': '9.5\r\n\r\n-- \r\nThomas Rost\r\n', 'user': 'T'},
-    # {'date': datetime.date(2021, 4, 15), 'done': False, 'key': '658', 'subject': 'Wellbeing', 'text': '7.5\r\n', 'user': 'M'},
-    # {'date': datetime.date(2021, 4, 15), 'done': False, 'key': '659', 'subject': 'Wellbeing', 'text': '4.5\r\n', 'user': 'M'},
-    # {'date': datetime.date(2021, 4, 15), 'done': False, 'key': '657', 'subject': 'Wellbeing', 'text': "6.5 (tummy, don't want to work)\r\n", 'user': 'T'}
-    # ]
-
-    tmp = []
-    for item in li_wellbeing_entries:
-        tmp[item['date']].append([item['user'], item['text']])
-
-    #for i, g in itertools.groupby(li_wellbeing_entries, key=operator.itemgetter("date")):
-    #    tmp.append(g["user"], g["text"])
-#
-    #print(tmp)
-    #print("HEREHEREHERE")
-    ###############################################################
-
-    #tmp = defaultdict(list)
-    #for item in li_wellbeing_entries:
-#
-    #    tmp[item['date']].append([item['user'], item['text']])
-#
-    #print("%%%%%%%%%%%%%%%%%%")
-    #print(tmp)
-
-    # defaultdict(<class 'list'>, {
-    #   datetime.date(2021, 4, 14): [
-    #   ['T', '9.5\r\n\r\n-- \r\nThomas Rost\r\n'],
-    #   ['M', '8\r\n'], ['M', '8\r\n']
-    #   ],
-    #   datetime.date(2021, 4, 15): [
-    #   ['T', "6.5 (tummy, don't want to work)\r\n"],
-    #   ['M', '7.5\r\n'],
-    #   ['M', '4.5\r\n']
-    #   ]
-    #   })
-    #print("^^^^^^^^^^^^^^^^^^")
-#
-    ## sort by user:
-    #for k,v in tmp.items():
-    #    print(k, v)
-    #    for item in v:
-    #        print("this is an item:")
-    #        print(item)
-    #        #userdict = {}
     ################################################################
 
+    # take the score of every entry, make it a float and create dict with the float(score), date and user
+    scores_dict = {}
+    li_scores = []
+
+    for entrydict in li_wellbeing_entries:
+        floatdict = {}
+        li_dict = []
+
+        entry_text = entrydict['text'].split(" ")
+        #print(entry_text)  #['9.5\r\n\r\n--', '\r\nThomas', 'Rost\r\n']
+
+        score = entry_text[0].split("\r")
+        score = float(score[0])
+        #print(score)
+        # good till here
 
 
 
-    #parsed_list = [{tmp['user']: k, tmp['text']: v} for k, v in tmp.items()]
-
-    #print(parsed_list)  # [
-    # {'user': datetime.date(2021, 4, 14), 'text': [['T', '9.5\r\n\r\n-- \r\nThomas Rost\r\n'], ['M', '8\r\n'], ['M', '8\r\n']]},
-    # {'user': datetime.date(2021, 4, 15), 'text': [['T', "6.5 (tummy, don't want to work)\r\n"], ['M', '7.5\r\n'], ['M', '4.5\r\n']]}]
 
 
 
-    print("###########")
-    print(tmp)
-
-
-            #entry_text = entry['text'].split(" ")
-            #print(entry_text)  #['9.5\r\n\r\n--', '\r\nThomas', 'Rost\r\n']
-#
-            #score = entry_text[0].split("\r")
-            #score = float(score[0])
-            #print(score)
-            #li_scores = []
-#
-            #scores[entry['user']] = {'date': entry['date'], 'score': score}
-    #print(scores)
-            #print(len(entry_text[0]))
-            #scores[entry['key']] = {'score': entry['text'], 'date': entry['date']}
-    #print("^^^^^^^^^^^^^^^^^")
 
 
 
-    return tmp
+
+
+    print("end of get_score()")
+
+
+
+    #return tmp
 
 
 entries = get_db_entries()
