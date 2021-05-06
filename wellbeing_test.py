@@ -16,9 +16,9 @@ def change_date_format(entries):
 
     return entries
 
+
 #########################################################################
 # Function that returns a parsed defaultdict with the data
-
 def get_scores(entries):
 
     # Create a list of dictionaries (entries) that are relevant:
@@ -29,6 +29,7 @@ def get_scores(entries):
             #print(entry)  # {'date': datetime.date(2021, 4, 14), 'done': False, 'key': '648', 'subject': 'Wellbeing', 'text': '9.5\r\n\r\n-- \r\nThomas Rost\r\n', 'user': 'T'}
             li_wellbeing_entries.append(entry)
 
+    # li_wellbeing_entries structures as following:
     # li_wellbeing_entries = [
     # {'date': datetime.date(2021, 4, 14), 'done': False, 'key': '648', 'subject': 'Wellbeing', 'text': '9.5\r\n\r\n-- \r\nThomas Rost\r\n', 'user': 'T'},
     # {'date': datetime.date(2021, 4, 14), 'done': False, 'key': '654', 'subject': 'Wellbeing', 'text': '8\r\n', 'user': 'M'},
@@ -69,8 +70,6 @@ def get_scores(entries):
     #                               {'T': [6.5]}
     #                              ]
     #           })
-
-    #print(pd.DataFrame.from_records(scores_dict))
 
     return scores_dict
 
@@ -123,6 +122,8 @@ print(scores)
 #                              ]
 #  }
 
+
+# Create Pandas DataFrame:
 # TODO: work on this, it rewrite the score for user (put only one per user)
 new_dict = {k: {k: v for userdict in li for k, v in userdict.items()} for k, li in scores.items()}
 
@@ -132,8 +133,7 @@ scores_df = pd.DataFrame.from_dict(new_dict, orient='index')
 
 print(scores_df)
 #
-#
-## Create pandas DataFrame
+
 ##index_df =
 #score_df = pd.DataFrame.from_dict(scores)#, orient='index')#, orient=scores.keys())
 ##score_df = pd.Series(scores).apply(pd.Series).T
@@ -190,9 +190,8 @@ print(scores_df)
 #
 #
 ##parsed_score_df = pd.DataFrame.from_dict(parse_dict_scores(scores))
+
 #
-##print(parsed_score_df)
-#
-## Plot DataFrame
-##plt.plot(score_df)
-#
+# Plot DataFrame:
+plt.plot(scores_df)
+plt.show()
